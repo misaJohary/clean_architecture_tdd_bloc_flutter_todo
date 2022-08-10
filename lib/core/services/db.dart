@@ -20,7 +20,7 @@ class DbServiceImp implements DbService {
       return _db!;
     }
 
-    String path = join(await getDatabasesPath(), 'task_collection.db');
+    final String path = join(await getDatabasesPath(), 'my_tasks.db');
     _db = await openDatabase(path, version: 1, onCreate: (Database db, int v) {
       db.execute('''
           CREATE TABLE tasks(
@@ -38,25 +38,25 @@ class DbServiceImp implements DbService {
 
   @override
   Future allItems() async {
-    Database db = await createDB();
+    final Database db = await createDB();
     return db.query('tasks');
   }
 
   @override
   Future<int?> createItem(TaskModel task) async {
-    Database db = await createDB();
+    final Database db = await createDB();
     return db.insert('tasks', task.toJson());
   }
 
   @override
   Future<int> deleteItem(int id) async {
-    Database db = await createDB();
+    final Database db = await createDB();
     return db.delete('tasks', where: 'id = ?', whereArgs: [id]);
   }
 
   @override
   Future<int> updateItem(TaskModel task) async {
-    Database db = await createDB();
+    final Database db = await createDB();
     return db
         .update('tasks', task.toJson(), where: 'id = ?', whereArgs: [task.id]);
   }

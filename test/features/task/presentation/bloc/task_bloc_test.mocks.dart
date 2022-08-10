@@ -14,6 +14,8 @@ import 'package:my_todo_clean/features/task/domain/repository/task_repository.da
     as _i2;
 import 'package:my_todo_clean/features/task/domain/usecases/find_tasks.dart'
     as _i4;
+import 'package:my_todo_clean/features/task/domain/usecases/find_todays_tasks.dart'
+    as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -60,4 +62,18 @@ class MockFindTasks extends _i1.Mock implements _i4.FindTasks {
                   _FakeEither_1<_i6.Failure, List<_i7.TaskEntity>>(
                       this, Invocation.method(#call, [params])))) as _i5
           .Future<_i3.Either<_i6.Failure, List<_i7.TaskEntity>>>);
+}
+
+/// A class which mocks [FindTodaysTask].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockFindTodaysTask extends _i1.Mock implements _i8.FindTodaysTask {
+  MockFindTodaysTask() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  List<_i7.TaskEntity> call(List<_i7.TaskEntity>? allTasks) =>
+      (super.noSuchMethod(Invocation.method(#call, [allTasks]),
+          returnValue: <_i7.TaskEntity>[]) as List<_i7.TaskEntity>);
 }

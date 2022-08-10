@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:my_todo_clean/core/error/exception.dart';
-import 'package:my_todo_clean/core/error/failure.dart';
 import 'package:my_todo_clean/core/services/db.dart';
 import 'package:my_todo_clean/features/task/data/data_sources/local_data_sources.dart';
 import 'package:my_todo_clean/features/task/data/model/task_model.dart';

@@ -37,10 +37,9 @@ class MockDbService extends _i1.Mock implements _i2.DbService {
       (super.noSuchMethod(Invocation.method(#updateItem, [task]),
           returnValue: _i3.Future<int>.value(0)) as _i3.Future<int>);
   @override
-  _i3.Future<List<_i4.TaskModel>> allItems() => (super.noSuchMethod(
-          Invocation.method(#allItems, []),
-          returnValue: _i3.Future<List<_i4.TaskModel>>.value(<_i4.TaskModel>[]))
-      as _i3.Future<List<_i4.TaskModel>>);
+  _i3.Future<dynamic> allItems() =>
+      (super.noSuchMethod(Invocation.method(#allItems, []),
+          returnValue: _i3.Future<dynamic>.value()) as _i3.Future<dynamic>);
   @override
   _i3.Future<int> deleteItem(int? id) =>
       (super.noSuchMethod(Invocation.method(#deleteItem, [id]),

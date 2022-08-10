@@ -8,3 +8,5 @@ abstract class TaskEvent extends Equatable {
 }
 
 class OnFindTasks extends TaskEvent {}
+
+class OnFindTodayTasks extends TaskEvent {}
