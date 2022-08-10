@@ -39,53 +39,94 @@ void main() {
     ),
   ];
 
+  const TaskModel tTaskModel = TaskModel(
+    id: 0,
+    name: 'test',
+    description: 'another test',
+    date: '',
+    isDone: false,
+  );
+
   setUp(() {
     mockLocalDataSource = MockTaskLocalDataSources();
     repoImp = TaskRepositoryImp(mockLocalDataSource);
   });
 
-  test(
-    'Should call the taskLocaldatasource',
-    () async {
-      // arrange
-      when(mockLocalDataSource.findTasks())
-          .thenAnswer((_) async => tTasksModel);
+  group('Find tasks', () {
+    test(
+      'Should call the taskLocaldatasource',
+      () async {
+        // arrange
+        when(mockLocalDataSource.findTasks())
+            .thenAnswer((_) async => tTasksModel);
 
-      // act
-      await repoImp.findTasks();
+        // act
+        await repoImp.findTasks();
 
-      // assert
-      verify(mockLocalDataSource.findTasks());
-    },
-  );
-  test(
-    'Should return the task list form Local data source',
-    () async {
-      // arrange
-      when(mockLocalDataSource.findTasks())
-          .thenAnswer((_) async => tTasksModel);
+        // assert
+        verify(mockLocalDataSource.findTasks());
+      },
+    );
+    test(
+      'Should return the task list form Local data source',
+      () async {
+        // arrange
+        when(mockLocalDataSource.findTasks())
+            .thenAnswer((_) async => tTasksModel);
 
-      // act
-      final res = await repoImp.findTasks();
+        // act
+        final res = await repoImp.findTasks();
 
-      // assert
-      verify(mockLocalDataSource.findTasks());
-      expect(res, const Right(tTasksModel));
-    },
-  );
+        // assert
+        verify(mockLocalDataSource.findTasks());
+        expect(res, const Right(tTasksModel));
+      },
+    );
 
-  test(
-    'Should return cache failure form Local data source',
-    () async {
-      // arrange
-      when(mockLocalDataSource.findTasks()).thenThrow(CacheException());
+    test(
+      'Should return cache failure form Local data source',
+      () async {
+        // arrange
+        when(mockLocalDataSource.findTasks()).thenThrow(CacheException());
 
-      // act
-      final res = await repoImp.findTasks();
+        // act
+        final res = await repoImp.findTasks();
 
-      // assert
-      verify(mockLocalDataSource.findTasks());
-      expect(res, const Left(CacheFailure()));
-    },
-  );
+        // assert
+        verify(mockLocalDataSource.findTasks());
+        expect(res, const Left(CacheFailure()));
+      },
+    );
+  });
+
+  group('Create task', () {
+    test(
+      'Should return a task model',
+      () async {
+        //arrange
+        when(mockLocalDataSource.createTask(tTaskModel))
+            .thenAnswer((_) async => tTaskModel);
+
+        //act
+        final res = await repoImp.createTask(tTaskModel);
+
+        //assert
+        expect(res, equals(const Right(tTaskModel)));
+      },
+    );
+    test(
+      'Should return cache failure',
+      () async {
+        //arrange
+        when(mockLocalDataSource.createTask(tTaskModel))
+            .thenThrow(CacheException());
+
+        //act
+        final res = await repoImp.createTask(tTaskModel);
+
+        //assert
+        expect(res, equals(const Left(CacheFailure())));
+      },
+    );
+  });
 }

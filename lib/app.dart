@@ -12,10 +12,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => TaskBloc(
-            findTasks: getIt(),
-            findTodaysTask: getIt(),
-          ),
+          create: (_) => getIt<TaskBloc>(),
         )
       ],
       child: MaterialApp(

@@ -12,6 +12,8 @@ import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart'
     as _i7;
 import 'package:my_todo_clean/features/task/domain/repository/task_repository.dart'
     as _i2;
+import 'package:my_todo_clean/features/task/domain/usecases/create_task.dart'
+    as _i9;
 import 'package:my_todo_clean/features/task/domain/usecases/find_tasks.dart'
     as _i4;
 import 'package:my_todo_clean/features/task/domain/usecases/find_todays_tasks.dart'
@@ -76,4 +78,23 @@ class MockFindTodaysTask extends _i1.Mock implements _i8.FindTodaysTask {
   List<_i7.TaskEntity> call(List<_i7.TaskEntity>? allTasks) =>
       (super.noSuchMethod(Invocation.method(#call, [allTasks]),
           returnValue: <_i7.TaskEntity>[]) as List<_i7.TaskEntity>);
+}
+
+/// A class which mocks [CreateTaskUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCreateTaskUseCase extends _i1.Mock implements _i9.CreateTaskUseCase {
+  MockCreateTaskUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>> call(
+          _i9.AddTaskParam? params) =>
+      (super.noSuchMethod(Invocation.method(#call, [params]),
+              returnValue:
+                  _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>>.value(
+                      _FakeEither_1<_i6.Failure, _i7.TaskEntity>(
+                          this, Invocation.method(#call, [params]))))
+          as _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>>);
 }

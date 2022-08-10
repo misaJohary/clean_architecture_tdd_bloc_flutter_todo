@@ -3,12 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:my_todo_clean/features/task/data/data_sources/local_data_sources.dart'
-    as _i2;
-import 'package:my_todo_clean/features/task/data/model/task_model.dart' as _i4;
+    as _i3;
+import 'package:my_todo_clean/features/task/data/model/task_model.dart' as _i2;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -21,18 +21,29 @@ import 'package:my_todo_clean/features/task/data/model/task_model.dart' as _i4;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeTaskModel_0 extends _i1.SmartFake implements _i2.TaskModel {
+  _FakeTaskModel_0(Object parent, Invocation parentInvocation)
+      : super(parent, parentInvocation);
+}
+
 /// A class which mocks [TaskLocalDataSources].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTaskLocalDataSources extends _i1.Mock
-    implements _i2.TaskLocalDataSources {
+    implements _i3.TaskLocalDataSources {
   MockTaskLocalDataSources() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i4.TaskModel>> findTasks() => (super.noSuchMethod(
+  _i4.Future<List<_i2.TaskModel>> findTasks() => (super.noSuchMethod(
           Invocation.method(#findTasks, []),
-          returnValue: _i3.Future<List<_i4.TaskModel>>.value(<_i4.TaskModel>[]))
-      as _i3.Future<List<_i4.TaskModel>>);
+          returnValue: _i4.Future<List<_i2.TaskModel>>.value(<_i2.TaskModel>[]))
+      as _i4.Future<List<_i2.TaskModel>>);
+  @override
+  _i4.Future<_i2.TaskModel> createTask(_i2.TaskModel? task) =>
+      (super.noSuchMethod(Invocation.method(#createTask, [task]),
+              returnValue: _i4.Future<_i2.TaskModel>.value(_FakeTaskModel_0(
+                  this, Invocation.method(#createTask, [task]))))
+          as _i4.Future<_i2.TaskModel>);
 }

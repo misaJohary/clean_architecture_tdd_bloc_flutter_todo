@@ -5,6 +5,7 @@ import 'core/services/db.dart';
 import 'features/task/data/data_sources/local_data_sources.dart';
 import 'features/task/data/repository/task_repository_imp.dart';
 import 'features/task/domain/repository/task_repository.dart';
+import 'features/task/domain/usecases/create_task.dart';
 import 'features/task/domain/usecases/find_tasks.dart';
 import 'features/task/domain/usecases/find_todays_tasks.dart';
 import 'features/task/presentation/bloc/task_bloc.dart';
@@ -26,7 +27,17 @@ void usecase() {
     ),
   );
 
-  getIt.registerLazySingleton(() => FindTodaysTask(getIt()));
+  getIt.registerLazySingleton(
+    () => FindTodaysTask(
+      getIt(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => CreateTaskUseCase(
+      getIt(),
+    ),
+  );
 }
 
 void repository() {
@@ -50,6 +61,7 @@ void bloc() {
     () => TaskBloc(
       findTasks: getIt(),
       findTodaysTask: getIt(),
+      createTask: getIt(),
     ),
   );
 }

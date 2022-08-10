@@ -10,3 +10,9 @@ abstract class TaskEvent extends Equatable {
 class OnFindTasks extends TaskEvent {}
 
 class OnFindTodayTasks extends TaskEvent {}
+
+class OnCreateTask extends TaskEvent {
+  final TaskModel task;
+
+  const OnCreateTask(this.task);
+}

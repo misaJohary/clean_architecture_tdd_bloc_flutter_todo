@@ -16,7 +16,7 @@ void main() {
         expect(
             DateTime.now().isSameDate(
               DateTime.now().add(
-                const Duration(hours: 3),
+                const Duration(hours: 1),
               ),
             ),
             true);

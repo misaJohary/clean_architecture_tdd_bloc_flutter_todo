@@ -37,36 +37,93 @@ void main() {
     ),
   ];
 
+  const tTaskModel = TaskModel(
+    id: 0,
+    name: 'test',
+    description: 'another test',
+    date: '',
+    isDone: false,
+  );
+
   setUp(() {
     mockDbService = MockDbService();
     localImp = TaskLocalDataSourcesImp(db: mockDbService);
   });
 
-  test(
-    'Should find tasks from data base',
-    () async {
-      when(mockDbService.allItems()).thenAnswer((_) async => tTasksModel);
+  group('find tasks', () {
+    test(
+      'Should find tasks from data base',
+      () async {
+        when(mockDbService.allItems()).thenAnswer((_) async => tTasksModel);
 
-      final res = await localImp.findTasks();
+        final res = await localImp.findTasks();
 
-      expect(
-        res,
-        tTasksModel,
-      );
-    },
-  );
+        expect(
+          res,
+          tTasksModel,
+        );
+      },
+    );
 
-  test(
-    'Should throw cache exception',
-    () async {
-      when(mockDbService.allItems()).thenThrow(Exception());
+    test(
+      'Should throw cache exception',
+      () async {
+        when(mockDbService.allItems()).thenThrow(Exception());
 
-      final call = localImp.findTasks;
+        final call = localImp.findTasks;
 
-      expect(
-        () => call(),
-        throwsA(const TypeMatcher<CacheException>()),
-      );
-    },
-  );
+        expect(
+          () => call(),
+          throwsA(const TypeMatcher<CacheException>()),
+        );
+      },
+    );
+  });
+
+  group('create task', () {
+    test(
+      'should cache the new task',
+      () async {
+        //Arrange
+        when(mockDbService.createItem(tTaskModel)).thenAnswer((_) async => 1);
+
+        //act
+        await localImp.createTask(tTaskModel);
+
+        //arrange
+        verify(mockDbService.createItem(tTaskModel));
+      },
+    );
+
+    test(
+      'should return the task successfully saved',
+      () async {
+        //Arrange
+        when(mockDbService.createItem(tTaskModel)).thenAnswer((_) async => 1);
+
+        //act
+        final res = await localImp.createTask(tTaskModel);
+
+        //arrange
+        expect(res, tTaskModel);
+        verify(mockDbService.createItem(tTaskModel));
+      },
+    );
+
+    test(
+      'should throw cache exception when there is error',
+      () async {
+        //Arrange
+        when(mockDbService.createItem(tTaskModel)).thenAnswer((_) async => 0);
+
+        //act
+        final call = localImp.createTask;
+
+        //arrange
+        expect(() => call(tTaskModel),
+            throwsA(const TypeMatcher<CacheException>()));
+        verify(mockDbService.createItem(tTaskModel));
+      },
+    );
+  });
 }
