@@ -7,4 +7,6 @@ import '../entity/task_entity.dart';
 abstract class TaskRepository {
   Future<Either<Failure, List<TaskEntity>>> findTasks();
   Future<Either<Failure, TaskEntity>> createTask(TaskModel task);
+  Future<Either<Failure, TaskEntity>> updateTask(TaskEntity task);
+  Future<Either<Failure, TaskEntity>> deleteTask(TaskEntity task);
 }

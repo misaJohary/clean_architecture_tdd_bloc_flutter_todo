@@ -7,8 +7,10 @@ import 'package:my_todo_clean/core/error/failure.dart';
 import 'package:my_todo_clean/features/task/data/model/task_model.dart';
 import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/create_task.dart';
+import 'package:my_todo_clean/features/task/domain/usecases/delete_task.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/find_tasks.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/find_todays_tasks.dart';
+import 'package:my_todo_clean/features/task/domain/usecases/update_task.dart';
 import 'package:my_todo_clean/features/task/presentation/bloc/task_bloc.dart';
 
 import 'task_bloc_test.mocks.dart';
@@ -16,10 +18,14 @@ import 'task_bloc_test.mocks.dart';
 @GenerateMocks([FindTasks])
 @GenerateMocks([FindTodaysTask])
 @GenerateMocks([CreateTaskUseCase])
+@GenerateMocks([UpdateTaskUsecase])
+@GenerateMocks([DeleteTask])
 void main() {
   late MockFindTasks mockFindTasks;
   late MockFindTodaysTask mockFindTodaysTask;
   late MockCreateTaskUseCase mockCreateTaskUseCase;
+  late MockUpdateTaskUsecase mockUpdateTaskUsecase;
+  late MockDeleteTask mockDeleteTask;
   late TaskBloc taskBloc;
 
   const tTasks = [
@@ -30,6 +36,47 @@ void main() {
       date: '',
       isDone: false,
     ),
+    TaskEntity(
+      id: 1,
+      name: 'test1',
+      description: 'another test 1',
+      date: '',
+      isDone: false,
+    ),
+    TaskEntity(
+      id: 2,
+      name: 'test2',
+      description: 'another test 2',
+      date: '',
+      isDone: false,
+    ),
+  ];
+
+  const tTasksUpdate = [
+    TaskEntity(
+      id: 0,
+      name: 'update test',
+      description: 'another test',
+      date: '',
+      isDone: false,
+    ),
+    TaskEntity(
+      id: 1,
+      name: 'test1',
+      description: 'another test 1',
+      date: '',
+      isDone: false,
+    ),
+    TaskEntity(
+      id: 2,
+      name: 'test2',
+      description: 'another test 2',
+      date: '',
+      isDone: false,
+    ),
+  ];
+
+  const tTasksDeleted = [
     TaskEntity(
       id: 1,
       name: 'test1',
@@ -63,6 +110,14 @@ void main() {
     ),
   ];
 
+  const tTaskEntity = TaskEntity(
+    id: 0,
+    name: 'update test',
+    description: 'another test',
+    date: '',
+    isDone: false,
+  );
+
   const tTaskModel = TaskModel(
     id: 0,
     name: 'test',
@@ -78,10 +133,14 @@ void main() {
     mockFindTasks = MockFindTasks();
     mockFindTodaysTask = MockFindTodaysTask();
     mockCreateTaskUseCase = MockCreateTaskUseCase();
+    mockUpdateTaskUsecase = MockUpdateTaskUsecase();
+    mockDeleteTask = MockDeleteTask();
     taskBloc = TaskBloc(
       findTasks: mockFindTasks,
       findTodaysTask: mockFindTodaysTask,
       createTask: mockCreateTaskUseCase,
+      updateTask: mockUpdateTaskUsecase,
+      deleteTask: mockDeleteTask,
     );
   });
 
@@ -218,6 +277,78 @@ void main() {
                   failure: CacheFailure(),
                   tasks: [],
                   todayTasks: [])
+            ]);
+  });
+
+  group('update task', () {
+    blocTest('should emit success loading and new tasks update',
+        build: () {
+          when(mockUpdateTaskUsecase(any))
+              .thenAnswer((_) async => const Right(tTaskEntity));
+          return taskBloc;
+        },
+        act: (_) => taskBloc.add(const UpdateTask(tTaskEntity)),
+        seed: () => const TaskState(
+            status: TaskStatus.loading, tasks: tTasks, todayTasks: []),
+        wait: const Duration(milliseconds: 100),
+        expect: () => [
+              const TaskState(
+                  status: TaskStatus.success,
+                  tasks: tTasksUpdate,
+                  todayTasks: [])
+            ]);
+
+    blocTest('should emit failure state and the failure',
+        build: () {
+          when(mockUpdateTaskUsecase(any))
+              .thenAnswer((_) async => const Left(CacheFailure()));
+          return taskBloc;
+        },
+        act: (_) => taskBloc.add(const UpdateTask(tTaskEntity)),
+        wait: const Duration(milliseconds: 100),
+        expect: () => [
+              taskInitialState,
+              const TaskState(
+                  status: TaskStatus.failure,
+                  failure: CacheFailure(),
+                  tasks: [],
+                  todayTasks: [])
+            ]);
+  });
+
+  group('Delete task', () {
+    blocTest('should delete task in the list of current state task',
+        build: () {
+          when(mockDeleteTask(any))
+              .thenAnswer((_) async => const Right(tTaskEntity));
+          return taskBloc;
+        },
+        act: (_) => taskBloc.add(const OnDeleteTask(tTaskEntity)),
+        seed: () => const TaskState(
+            status: TaskStatus.loading, tasks: tTasks, todayTasks: []),
+        wait: const Duration(milliseconds: 100),
+        expect: () => [
+              const TaskState(
+                  status: TaskStatus.success,
+                  tasks: tTasksDeleted,
+                  todayTasks: [])
+            ]);
+
+    blocTest('should return failure',
+        build: () {
+          when(mockDeleteTask(any))
+              .thenAnswer((_) async => const Left(CacheFailure()));
+          return taskBloc;
+        },
+        act: (_) => taskBloc.add(const OnDeleteTask(tTaskEntity)),
+        wait: const Duration(milliseconds: 100),
+        expect: () => [
+              taskInitialState,
+              const TaskState(
+                  status: TaskStatus.failure,
+                  tasks: [],
+                  todayTasks: [],
+                  failure: CacheFailure())
             ]);
   });
 }

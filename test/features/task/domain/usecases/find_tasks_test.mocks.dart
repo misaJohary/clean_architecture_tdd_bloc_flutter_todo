@@ -55,4 +55,22 @@ class MockTaskRepository extends _i1.Mock implements _i3.TaskRepository {
                       _FakeEither_0<_i5.Failure, _i6.TaskEntity>(
                           this, Invocation.method(#createTask, [task]))))
           as _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>> updateTask(
+          _i6.TaskEntity? task) =>
+      (super.noSuchMethod(Invocation.method(#updateTask, [task]),
+              returnValue:
+                  _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>>.value(
+                      _FakeEither_0<_i5.Failure, _i6.TaskEntity>(
+                          this, Invocation.method(#updateTask, [task]))))
+          as _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>>);
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>> deleteTask(
+          _i6.TaskEntity? task) =>
+      (super.noSuchMethod(Invocation.method(#deleteTask, [task]),
+              returnValue:
+                  _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>>.value(
+                      _FakeEither_0<_i5.Failure, _i6.TaskEntity>(
+                          this, Invocation.method(#deleteTask, [task]))))
+          as _i4.Future<_i2.Either<_i5.Failure, _i6.TaskEntity>>);
 }

@@ -16,3 +16,15 @@ class OnCreateTask extends TaskEvent {
 
   const OnCreateTask(this.task);
 }
+
+class UpdateTask extends TaskEvent {
+  final TaskEntity task;
+
+  const UpdateTask(this.task);
+}
+
+class OnDeleteTask extends TaskEvent {
+  final TaskEntity task;
+
+  const OnDeleteTask(this.task);
+}

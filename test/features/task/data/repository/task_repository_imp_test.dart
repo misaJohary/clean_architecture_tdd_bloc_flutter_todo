@@ -7,6 +7,7 @@ import 'package:my_todo_clean/core/error/failure.dart';
 import 'package:my_todo_clean/features/task/data/data_sources/local_data_sources.dart';
 import 'package:my_todo_clean/features/task/data/model/task_model.dart';
 import 'package:my_todo_clean/features/task/data/repository/task_repository_imp.dart';
+import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart';
 
 import 'task_repository_imp_test.mocks.dart';
 
@@ -40,6 +41,14 @@ void main() {
   ];
 
   const TaskModel tTaskModel = TaskModel(
+    id: 0,
+    name: 'test',
+    description: 'another test',
+    date: '',
+    isDone: false,
+  );
+
+  const TaskEntity tTask = TaskEntity(
     id: 0,
     name: 'test',
     description: 'another test',
@@ -126,6 +135,74 @@ void main() {
 
         //assert
         expect(res, equals(const Left(CacheFailure())));
+      },
+    );
+  });
+
+  group('Update task', () {
+    test(
+      'Should return task entity',
+      () async {
+        //arrange
+        when(mockLocalDataSource.updateTask(tTask))
+            .thenAnswer((_) async => tTask);
+
+        //act
+        final res = await repoImp.updateTask(tTask);
+
+        //assert
+        expect(
+          res,
+          const Right(tTask),
+        );
+      },
+    );
+
+    test(
+      'Should return cache failure',
+      () async {
+        //arrange
+        when(mockLocalDataSource.updateTask(tTask)).thenThrow(CacheException());
+
+        //act
+        final res = await repoImp.updateTask(tTask);
+
+        //assert
+        expect(
+          res,
+          const Left(CacheFailure()),
+        );
+      },
+    );
+  });
+
+  group('Detete task', () {
+    test(
+      'Should return task',
+      () async {
+        //arrange
+        when(mockLocalDataSource.deleteTask(tTask))
+            .thenAnswer((_) async => tTask);
+
+        //act
+        final res = await repoImp.deleteTask(tTask);
+
+        //assert
+        expect(res, const Right(tTask));
+      },
+    );
+
+    test(
+      'Should return failure',
+      () async {
+        //arrange
+        when(mockLocalDataSource.deleteTask(tTask)).thenThrow(CacheException());
+
+        //act
+        final res = await repoImp.deleteTask(tTask);
+
+        //assert
+        expect(res, const Left(CacheFailure()));
       },
     );
   });
