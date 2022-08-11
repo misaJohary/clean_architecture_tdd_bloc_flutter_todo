@@ -104,7 +104,7 @@ void main() {
   test(
     'same date',
     () {
-      final DateTime date = DateTime.parse('2022-08-10 10:00');
+      final DateTime date = DateTime.now().add(const Duration(hours: 1));
       expect(date.isSameDate(DateTime.now()), true);
     },
   );
