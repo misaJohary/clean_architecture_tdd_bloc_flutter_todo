@@ -1,0 +1,10 @@
+{
+    "language" : "Français",
+    "appTitle" : "Que faire",
+    "addNewTask" : "Ajouter une nouvelle tâche",
+    "inputTaskName": "nom de la tâche",
+    "inputTaskDescription": "description de la tâche",
+    "inputDueDate": "Date",
+    "inputDueTime": "Heure",
+    "validateTitle": "La nouvelle tâche doit avoir un titre"
+}

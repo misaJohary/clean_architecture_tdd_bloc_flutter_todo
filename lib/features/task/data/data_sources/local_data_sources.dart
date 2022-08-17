@@ -17,8 +17,14 @@ class TaskLocalDataSourcesImp implements TaskLocalDataSources {
   @override
   Future<List<TaskModel>> findTasks() async {
     try {
-      return await db.allItems();
+      final result = await db.allItems();
+      return List<TaskModel>.from(
+        result.map(
+          (item) => TaskModel.fromJson(item),
+        ),
+      );
     } catch (_) {
+      print(_);
       throw CacheException();
     }
   }
@@ -48,7 +54,7 @@ class TaskLocalDataSourcesImp implements TaskLocalDataSources {
 
   @override
   Future<TaskEntity> deleteTask(TaskEntity task) async {
-    if (await db.deleteItem(task.id) == 0) {
+    if (await db.deleteItem(task.id!) == 0) {
       throw CacheException();
     }
     return task;

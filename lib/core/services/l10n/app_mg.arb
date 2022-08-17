@@ -1,0 +1,10 @@
+{
+    "language": "Malagasy",
+    "appTitle" : "Asa atao",
+    "addNewTask": "Manampy asa vaovao",
+    "inputTaskName": "anarany",
+    "inputTaskDescription": "mombamomba",
+    "inputDueDate": "Daty",
+    "inputDueTime": "Ora",
+    "validateTitle": "Tokony misy lohany"
+}

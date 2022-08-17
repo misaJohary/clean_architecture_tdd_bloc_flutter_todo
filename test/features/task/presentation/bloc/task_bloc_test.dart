@@ -4,9 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:my_todo_clean/core/error/failure.dart';
-import 'package:my_todo_clean/features/task/data/model/task_model.dart';
 import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart';
-import 'package:my_todo_clean/features/task/domain/usecases/create_task.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/delete_task.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/find_tasks.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/find_todays_tasks.dart';
@@ -17,13 +15,13 @@ import 'task_bloc_test.mocks.dart';
 
 @GenerateMocks([FindTasks])
 @GenerateMocks([FindTodaysTask])
-@GenerateMocks([CreateTaskUseCase])
+// @GenerateMocks([CreateTaskUseCase])
 @GenerateMocks([UpdateTaskUsecase])
 @GenerateMocks([DeleteTask])
 void main() {
   late MockFindTasks mockFindTasks;
   late MockFindTodaysTask mockFindTodaysTask;
-  late MockCreateTaskUseCase mockCreateTaskUseCase;
+  // late MockCreateTaskUseCase mockCreateTaskUseCase;
   late MockUpdateTaskUsecase mockUpdateTaskUsecase;
   late MockDeleteTask mockDeleteTask;
   late TaskBloc taskBloc;
@@ -118,13 +116,13 @@ void main() {
     isDone: false,
   );
 
-  const tTaskModel = TaskModel(
-    id: 0,
-    name: 'test',
-    description: 'another test',
-    date: '',
-    isDone: false,
-  );
+  // const tTaskModel = TaskModel(
+  //   id: 0,
+  //   name: 'test',
+  //   description: 'another test',
+  //   date: '',
+  //   isDone: false,
+  // );
 
   const TaskState taskInitialState =
       TaskState(status: TaskStatus.loading, tasks: [], todayTasks: []);
@@ -132,13 +130,13 @@ void main() {
   setUp(() {
     mockFindTasks = MockFindTasks();
     mockFindTodaysTask = MockFindTodaysTask();
-    mockCreateTaskUseCase = MockCreateTaskUseCase();
+    // mockCreateTaskUseCase = MockCreateTaskUseCase();
     mockUpdateTaskUsecase = MockUpdateTaskUsecase();
     mockDeleteTask = MockDeleteTask();
     taskBloc = TaskBloc(
       findTasks: mockFindTasks,
       findTodaysTask: mockFindTodaysTask,
-      createTask: mockCreateTaskUseCase,
+      // createTask: mockCreateTaskUseCase,
       updateTask: mockUpdateTaskUsecase,
       deleteTask: mockDeleteTask,
     );
@@ -227,58 +225,58 @@ void main() {
             ]);
   });
 
-  group('Create Task', () {
-    blocTest('should add the new task to the list task',
-        build: (() {
-          when(mockCreateTaskUseCase(any))
-              .thenAnswer((_) async => const Right(tTaskModel));
-          return taskBloc;
-        }),
-        act: (_) => taskBloc.add(const OnCreateTask(tTaskModel)),
-        wait: const Duration(milliseconds: 100),
-        expect: () => [
-              taskInitialState,
-              const TaskState(
-                  status: TaskStatus.success,
-                  tasks: [tTaskModel],
-                  todayTasks: [])
-            ]);
+  // group('Create Task', () {
+  //   blocTest('should add the new task to the list task',
+  //       build: (() {
+  //         when(mockCreateTaskUseCase(any))
+  //             .thenAnswer((_) async => const Right(tTaskModel));
+  //         return taskBloc;
+  //       }),
+  //       act: (_) => taskBloc.add(const OnCreateTask(tTaskModel)),
+  //       wait: const Duration(milliseconds: 100),
+  //       expect: () => [
+  //             taskInitialState,
+  //             const TaskState(
+  //                 status: TaskStatus.success,
+  //                 tasks: [tTaskModel],
+  //                 todayTasks: [])
+  //           ]);
 
-    blocTest('should add the new task in the end of the list task',
-        build: (() {
-          when(mockCreateTaskUseCase(any))
-              .thenAnswer((_) async => const Right(tTaskModel));
-          return taskBloc;
-        }),
-        act: (_) => taskBloc.add(const OnCreateTask(tTaskModel)),
-        seed: () => const TaskState(
-            status: TaskStatus.loading, tasks: tTasks, todayTasks: []),
-        wait: const Duration(milliseconds: 100),
-        expect: () => [
-              TaskState(
-                  status: TaskStatus.success,
-                  tasks: List.of(tTasks)..add(tTaskModel),
-                  todayTasks: const [])
-            ]);
+  //   blocTest('should add the new task in the end of the list task',
+  //       build: (() {
+  //         when(mockCreateTaskUseCase(any))
+  //             .thenAnswer((_) async => const Right(tTaskModel));
+  //         return taskBloc;
+  //       }),
+  //       act: (_) => taskBloc.add(const OnCreateTask(tTaskModel)),
+  //       seed: () => const TaskState(
+  //           status: TaskStatus.loading, tasks: tTasks, todayTasks: []),
+  //       wait: const Duration(milliseconds: 100),
+  //       expect: () => [
+  //             TaskState(
+  //                 status: TaskStatus.success,
+  //                 tasks: List.of(tTasks)..add(tTaskModel),
+  //                 todayTasks: const [])
+  //           ]);
 
-    blocTest(
-        'should emit a failure state when the new task has not been saved to database',
-        build: (() {
-          when(mockCreateTaskUseCase(any))
-              .thenAnswer((_) async => const Left(CacheFailure()));
-          return taskBloc;
-        }),
-        act: (_) => taskBloc.add(const OnCreateTask(tTaskModel)),
-        wait: const Duration(milliseconds: 100),
-        expect: () => [
-              taskInitialState,
-              const TaskState(
-                  status: TaskStatus.failure,
-                  failure: CacheFailure(),
-                  tasks: [],
-                  todayTasks: [])
-            ]);
-  });
+  //   blocTest(
+  //       'should emit a failure state when the new task has not been saved to database',
+  //       build: (() {
+  //         when(mockCreateTaskUseCase(any))
+  //             .thenAnswer((_) async => const Left(CacheFailure()));
+  //         return taskBloc;
+  //       }),
+  //       act: (_) => taskBloc.add(const OnCreateTask(tTaskModel)),
+  //       wait: const Duration(milliseconds: 100),
+  //       expect: () => [
+  //             taskInitialState,
+  //             const TaskState(
+  //                 status: TaskStatus.failure,
+  //                 failure: CacheFailure(),
+  //                 tasks: [],
+  //                 todayTasks: [])
+  //           ]);
+  // });
 
   group('update task', () {
     blocTest('should emit success loading and new tasks update',
@@ -334,21 +332,24 @@ void main() {
                   todayTasks: [])
             ]);
 
-    blocTest('should return failure',
-        build: () {
-          when(mockDeleteTask(any))
-              .thenAnswer((_) async => const Left(CacheFailure()));
-          return taskBloc;
-        },
-        act: (_) => taskBloc.add(const OnDeleteTask(tTaskEntity)),
-        wait: const Duration(milliseconds: 100),
-        expect: () => [
-              taskInitialState,
-              const TaskState(
-                  status: TaskStatus.failure,
-                  tasks: [],
-                  todayTasks: [],
-                  failure: CacheFailure())
-            ]);
+    blocTest(
+      'should return failure',
+      build: () {
+        when(mockDeleteTask(any))
+            .thenAnswer((_) async => const Left(CacheFailure()));
+        return taskBloc;
+      },
+      act: (_) => taskBloc.add(const OnDeleteTask(tTaskEntity)),
+      wait: const Duration(milliseconds: 100),
+      expect: () => [
+        taskInitialState,
+        const TaskState(
+          status: TaskStatus.failure,
+          tasks: [],
+          todayTasks: [],
+          failure: CacheFailure(),
+        )
+      ],
+    );
   });
 }
