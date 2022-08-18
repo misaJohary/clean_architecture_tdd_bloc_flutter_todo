@@ -30,6 +30,7 @@ class NewTask extends StatelessWidget {
                   elevation: 0,
                   controller: state.controller,
                   onPressed: () {
+                    FocusManager.instance.primaryFocus?.unfocus();
                     context.read<NewTaskBloc>().add(OnAddNewTask(context));
                   },
                   child: const Icon(

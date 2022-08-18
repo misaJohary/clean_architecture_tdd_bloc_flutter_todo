@@ -33,6 +33,7 @@ class NewTaskState extends Equatable {
     String? time,
     FormzStatus? formStatus,
     String? titleError,
+    bool clearTitleError = false,
     RoundedLoadingButtonController? controller,
   }) =>
       NewTaskState(
@@ -43,7 +44,7 @@ class NewTaskState extends Equatable {
         date: date ?? this.date,
         time: time ?? this.time,
         formStatus: formStatus ?? this.formStatus,
-        titleError: titleError ?? this.titleError,
+        titleError: clearTitleError ? null : titleError ?? this.titleError,
         controller: controller ?? this.controller,
       );
   @override

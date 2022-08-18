@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 import '../../../../core/routes/app_routes.dart';
-import '../../../../core/widgets/shimmer_widget.dart';
 import '../bloc/task_bloc.dart';
 
 import '../widgets/task_skeleton_widget.dart';

@@ -6,5 +6,7 @@
     "inputTaskDescription": "description de la tâche",
     "inputDueDate": "Date",
     "inputDueTime": "Heure",
-    "validateTitle": "La nouvelle tâche doit avoir un titre"
+    "validateTitle": "La nouvelle tâche doit avoir un titre",
+    "errorCreatingNewTask": "Erreur lors de la création de la tâche",
+    "successCreatingNewTask": "Nouvelle tâche ajoutée avec succès"
 }

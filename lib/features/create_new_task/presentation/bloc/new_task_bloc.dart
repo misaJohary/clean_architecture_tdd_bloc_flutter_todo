@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -6,13 +5,13 @@ import 'package:formz/formz.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/helpers/datetime_factory.dart';
 import '../../../../core/pop_up/toast_message.dart';
 import '../../../task/data/model/task_model.dart';
-import '../../../task/domain/entity/task_entity.dart';
 import '../../data/models/task_title.dart';
 import '../../domain/usecases/create_task_usecase.dart';
 
@@ -44,14 +43,19 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     state.controller.stop();
 
     res.fold((failure) {
-      failureMessage(event.context, 'Error creating new task');
+      failureMessage(event.context,
+          AppLocalizations.of(event.context)!.errorCreatingNewTask);
       return emit(
           state.copyWith(status: NewTaskStatus.failure, failure: failure));
     }, (task) {
-      successMessage(event.context, 'New task added successfully');
+      successMessage(event.context,
+          AppLocalizations.of(event.context)!.successCreatingNewTask);
+
       return emit(
         state.copyWith(
           status: NewTaskStatus.success,
+          title: const TaskTitle.pure(),
+          description: null,
         ),
       );
     });
@@ -102,11 +106,11 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
       state.controller.stop();
       return add(OnVerifyNewTask());
     } else {
-      emit(state.copyWith(titleError: null));
+      emit(state.copyWith(clearTitleError: true));
       final newTask = TaskModel(
         name: state.title.value,
         description: state.description ?? '',
-        date: state.date,
+        date: '${state.date} ${state.time}',
         isDone: false,
       );
       add(OnCreateTask(context: event.context, task: newTask));

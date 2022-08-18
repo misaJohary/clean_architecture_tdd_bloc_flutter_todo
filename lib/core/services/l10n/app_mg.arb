@@ -6,5 +6,7 @@
     "inputTaskDescription": "mombamomba",
     "inputDueDate": "Daty",
     "inputDueTime": "Ora",
-    "validateTitle": "Tokony misy lohany"
+    "validateTitle": "Tokony misy lohany",
+    "errorCreatingNewTask": "Nisy olana nandritran'ny famoronana ilay asa vaovao",
+    "successCreatingNewTask": "Voapiditra tsara ilay asa vaovao"
 }

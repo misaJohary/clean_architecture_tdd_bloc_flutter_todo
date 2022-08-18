@@ -37,5 +37,15 @@
     "validateTitle": "The task's title shouldn't be empty",
     "@validateTitle":{
         "description": "The error message to show when the task's title is empty"
+    },
+
+    "errorCreatingNewTask": "Error creating new task",
+    "@errorCreatingNewTask":{
+        "description": "The error message to show when creating task unsuccess"
+    },
+
+    "successCreatingNewTask": "Adding new task successfully",
+    "@successCreatingNewTask":{
+        "description": "The message to show when creating task success"
     }
 }
