@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import '../../../../core/helpers/unfocus_keyboard.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/m_rounded_loading_button.dart';
 import '../../../task/presentation/bloc/task_bloc.dart';
 import '../bloc/new_task_bloc.dart';
 
 class NewTask extends StatelessWidget {
-  const NewTask({Key? key}) : super(key: key);
+  const NewTask({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,7 @@ class NewTask extends StatelessWidget {
                   elevation: 0,
                   controller: state.controller,
                   onPressed: () {
-                    FocusManager.instance.primaryFocus?.unfocus();
+                    unfocusKeyboard();
                     context.read<NewTaskBloc>().add(OnAddNewTask(context));
                   },
                   child: const Icon(

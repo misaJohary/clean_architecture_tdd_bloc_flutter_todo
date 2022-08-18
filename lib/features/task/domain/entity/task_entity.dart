@@ -22,4 +22,12 @@ class TaskEntity extends Equatable {
         date,
         isDone,
       ];
+
+  factory TaskEntity.switchMarkDone(TaskEntity task) => TaskEntity(
+        id: task.id,
+        name: task.name,
+        description: task.description,
+        date: task.date,
+        isDone: !task.isDone,
+      );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../domain/entity/task_entity.dart';
@@ -23,12 +24,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     // required this.createTask,
     required this.updateTask,
     required this.deleteTask,
-  }) : super(const TaskInitial()) {
+  }) : super(TaskInitial()) {
     on<OnFindTasks>(_onFindTasks);
     on<OnFindTodayTasks>(_onFindTodayTasks);
     // on<OnCreateTask>(_onCreateTask);
     on<UpdateTask>(_onUpdateTask);
     on<OnDeleteTask>(_onDeleteTask);
+    on<SwitchMarkTask>(_onSwitchMarkTask);
   }
 
   void _onFindTasks(
@@ -38,6 +40,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     emit(
       state.copyWith(
         status: TaskStatus.loading,
+        tasks: [],
       ),
     );
     final res = await findTasks(NoParams());
@@ -63,23 +66,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     emit(state.copyWith(status: TaskStatus.success, todayTasks: todays));
   }
 
-  // void _onCreateTask(
-  //   OnCreateTask event,
-  //   Emitter<TaskState> emit,
-  // ) async {
-  //   emit(state.copyWith(
-  //     status: TaskStatus.loading,
-  //   ));
-  //   final res = await createTask(AddTaskParam(event.task));
-
-  //   res.fold(
-  //       (failure) =>
-  //           emit(state.copyWith(status: TaskStatus.failure, failure: failure)),
-  //       (task) => emit(state.copyWith(
-  //           status: TaskStatus.success,
-  //           tasks: List.of(state.tasks)..add(task))));
-  // }
-
   void _onUpdateTask(
     UpdateTask event,
     Emitter<TaskState> emit,
@@ -88,19 +74,34 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       status: TaskStatus.loading,
     ));
     final res = await updateTask(UpdateTaskParam(event.task));
+    state.updateButtonController.stop();
 
     res.fold(
         (failure) =>
             emit(state.copyWith(status: TaskStatus.failure, failure: failure)),
         (task) {
       final id =
-          state.tasks.firstWhere((element) => element.id == event.task.id).id;
-      return emit(state.copyWith(
+          state.tasks.indexWhere((element) => element.id == event.task.id);
+      return emit(
+        state.copyWith(
           status: TaskStatus.success,
           tasks: List.of(state.tasks)
-            ..removeAt(id!)
-            ..insert(id, task)));
+            ..removeAt(id)
+            ..insert(id, task),
+        ),
+      );
     });
+  }
+
+  void _onSwitchMarkTask(
+    SwitchMarkTask event,
+    Emitter<TaskState> emit,
+  ) {
+    add(
+      UpdateTask(
+        TaskEntity.switchMarkDone(event.task),
+      ),
+    );
   }
 
   void _onDeleteTask(
@@ -118,10 +119,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
             emit(state.copyWith(status: TaskStatus.failure, failure: failure)),
         (task) {
       final id =
-          state.tasks.firstWhere((element) => element.id == event.task.id).id;
-      return emit(state.copyWith(
+          state.tasks.indexWhere((element) => element.id == event.task.id);
+      return emit(
+        state.copyWith(
           status: TaskStatus.success,
-          tasks: List.of(state.tasks)..removeAt(id!)));
+          tasks: List.of(state.tasks)..removeAt(id),
+        ),
+      );
     });
   }
 }

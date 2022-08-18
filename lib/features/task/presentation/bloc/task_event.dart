@@ -29,6 +29,15 @@ class UpdateTask extends TaskEvent {
   List<Object> get props => [task];
 }
 
+class SwitchMarkTask extends TaskEvent {
+  final TaskEntity task;
+
+  const SwitchMarkTask(this.task);
+
+  @override
+  List<Object> get props => [task];
+}
+
 class OnDeleteTask extends TaskEvent {
   final TaskEntity task;
 

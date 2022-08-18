@@ -12,6 +12,7 @@ import '../../../../core/error/failure.dart';
 import '../../../../core/helpers/datetime_factory.dart';
 import '../../../../core/pop_up/toast_message.dart';
 import '../../../task/data/model/task_model.dart';
+import '../../../task/domain/entity/task_entity.dart';
 import '../../data/models/task_title.dart';
 import '../../domain/usecases/create_task_usecase.dart';
 
@@ -28,6 +29,7 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     on<OnAddNewTask>(_onAddNewTask);
     on<OnDateSelected>(_onDateSelected);
     on<OnTimeSelected>(_onTimeSelected);
+    on<OnInitializeTask>(_onInitializeTask);
   }
 
   void _onCreateTask(
@@ -146,6 +148,24 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     emit(
       state.copyWith(
         time: time,
+      ),
+    );
+  }
+
+  void _onInitializeTask(
+    OnInitializeTask event,
+    Emitter<NewTaskState> emit,
+  ) {
+    final dateTime = DateTimeFactoryImp().stringToDateTime(event.task.date);
+    final time = DateFormat('HH:mm').format(dateTime);
+    final date = DateFormat('yyyy-MM-dd').format(dateTime);
+
+    emit(
+      state.copyWith(
+        time: time,
+        date: date,
+        title: TaskTitle.dirty(event.task.name),
+        description: event.task.description,
       ),
     );
   }

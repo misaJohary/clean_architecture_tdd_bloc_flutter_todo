@@ -8,24 +8,29 @@ class TaskState extends Equatable {
     required this.tasks,
     required this.todayTasks,
     this.failure,
+    required this.updateButtonController,
   });
 
   final TaskStatus status;
   final List<TaskEntity> tasks;
   final List<TaskEntity> todayTasks;
   final Failure? failure;
+  final RoundedLoadingButtonController updateButtonController;
 
   TaskState copyWith({
     TaskStatus? status,
     List<TaskEntity>? tasks,
     Failure? failure,
     List<TaskEntity>? todayTasks,
+    RoundedLoadingButtonController? updateButtonController,
   }) =>
       TaskState(
         status: status ?? this.status,
         tasks: tasks ?? this.tasks,
         todayTasks: todayTasks ?? this.todayTasks,
         failure: failure ?? this.failure,
+        updateButtonController:
+            updateButtonController ?? this.updateButtonController,
       );
 
   @override
@@ -34,14 +39,18 @@ class TaskState extends Equatable {
         tasks,
         todayTasks,
         failure,
+        updateButtonController,
       ];
 }
 
 class TaskInitial extends TaskState {
-  const TaskInitial(
+  TaskInitial(
       {super.status = TaskStatus.loading,
       super.tasks = const [],
-      super.todayTasks = const []});
+      super.todayTasks = const []})
+      : super(
+          updateButtonController: RoundedLoadingButtonController(),
+        );
   // : super(
   //     status: TaskStatus.loading,
   //     tasks: [],

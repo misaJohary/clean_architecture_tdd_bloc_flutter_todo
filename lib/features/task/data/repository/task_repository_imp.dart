@@ -35,6 +35,7 @@ class TaskRepositoryImp implements TaskRepository {
     try {
       return Right(await _taskLocalDataSource.updateTask(task));
     } catch (_) {
+      print(_);
       return const Left(CacheFailure());
     }
   }
