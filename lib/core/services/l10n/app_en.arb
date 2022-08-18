@@ -1,0 +1,51 @@
+{
+    "language": "English",
+    "@language":{
+        "description": "The current Language"
+    },
+
+    "appTitle": "To do",
+    "@appTitle":{
+        "description": "The generale name of the application"
+    },
+
+    "addNewTask": "Add New Task",
+    "@addNewTask":{
+        "description": "app bar adding new task title "
+    },
+
+    "inputTaskName": "task name",
+    "@inputTaskName":{
+        "description": "The label of the input task name"
+    },
+
+    "inputTaskDescription": "task description",
+    "@inputTaskDescription":{
+        "description": "The label of the input task description"
+    },
+
+    "inputDueDate": "Date",
+    "@inputDueDate":{
+        "description": "The due date of the new task"
+    },
+
+    "inputDueTime": "Time",
+    "@inputDueTime":{
+        "description": "The due time of the new task"
+    },
+
+    "validateTitle": "The task's title shouldn't be empty",
+    "@validateTitle":{
+        "description": "The error message to show when the task's title is empty"
+    },
+
+    "errorCreatingNewTask": "Error creating new task",
+    "@errorCreatingNewTask":{
+        "description": "The error message to show when creating task unsuccess"
+    },
+
+    "successCreatingNewTask": "Adding new task successfully",
+    "@successCreatingNewTask":{
+        "description": "The message to show when creating task success"
+    }
+}

@@ -20,15 +20,14 @@ class DbServiceImp implements DbService {
       return _db!;
     }
 
-    final String path = join(await getDatabasesPath(), 'my_tasks.db');
+    final String path = join(await getDatabasesPath(), 'my_tasks_now.db');
     _db = await openDatabase(path, version: 1, onCreate: (Database db, int v) {
       db.execute('''
-          CREATE TABLE tasks(
+          CREATE TABLE m_tasks(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
+            name TEXT,
             description TEXT,
-            dateTime TEXT,
-            views INTEGER,
+            date TEXT,
             isDone INTEGER
           );
         ''').catchError((val) => log(val));
@@ -39,25 +38,25 @@ class DbServiceImp implements DbService {
   @override
   Future allItems() async {
     final Database db = await createDB();
-    return db.query('tasks');
+    return db.query('m_tasks');
   }
 
   @override
   Future<int?> createItem(TaskModel task) async {
     final Database db = await createDB();
-    return db.insert('tasks', task.toJson());
+    return db.insert('m_tasks', task.toJson());
   }
 
   @override
   Future<int> deleteItem(int id) async {
     final Database db = await createDB();
-    return db.delete('tasks', where: 'id = ?', whereArgs: [id]);
+    return db.delete('m_tasks', where: 'id = ?', whereArgs: [id]);
   }
 
   @override
   Future<int> updateItem(TaskModel task) async {
     final Database db = await createDB();
-    return db
-        .update('tasks', task.toJson(), where: 'id = ?', whereArgs: [task.id]);
+    return db.update('m_tasks', task.toJson(),
+        where: 'id = ?', whereArgs: [task.id]);
   }
 }

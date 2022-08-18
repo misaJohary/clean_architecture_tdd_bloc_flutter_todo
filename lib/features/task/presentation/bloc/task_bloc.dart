@@ -2,9 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../core/error/failure.dart';
-import '../../data/model/task_model.dart';
 import '../../domain/entity/task_entity.dart';
-import '../../domain/usecases/create_task.dart';
 import '../../domain/usecases/delete_task.dart';
 import '../../domain/usecases/find_tasks.dart';
 import '../../domain/usecases/find_todays_tasks.dart';
@@ -16,19 +14,19 @@ part 'task_state.dart';
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final FindTasks findTasks;
   final FindTodaysTask findTodaysTask;
-  final CreateTaskUseCase createTask;
+  // final CreateTaskUseCase createTask;
   final UpdateTaskUsecase updateTask;
   final DeleteTask deleteTask;
   TaskBloc({
     required this.findTasks,
     required this.findTodaysTask,
-    required this.createTask,
+    // required this.createTask,
     required this.updateTask,
     required this.deleteTask,
   }) : super(const TaskInitial()) {
     on<OnFindTasks>(_onFindTasks);
     on<OnFindTodayTasks>(_onFindTodayTasks);
-    on<OnCreateTask>(_onCreateTask);
+    // on<OnCreateTask>(_onCreateTask);
     on<UpdateTask>(_onUpdateTask);
     on<OnDeleteTask>(_onDeleteTask);
   }
@@ -65,22 +63,22 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     emit(state.copyWith(status: TaskStatus.success, todayTasks: todays));
   }
 
-  void _onCreateTask(
-    OnCreateTask event,
-    Emitter<TaskState> emit,
-  ) async {
-    emit(state.copyWith(
-      status: TaskStatus.loading,
-    ));
-    final res = await createTask(AddTaskParam(event.task));
+  // void _onCreateTask(
+  //   OnCreateTask event,
+  //   Emitter<TaskState> emit,
+  // ) async {
+  //   emit(state.copyWith(
+  //     status: TaskStatus.loading,
+  //   ));
+  //   final res = await createTask(AddTaskParam(event.task));
 
-    res.fold(
-        (failure) =>
-            emit(state.copyWith(status: TaskStatus.failure, failure: failure)),
-        (task) => emit(state.copyWith(
-            status: TaskStatus.success,
-            tasks: List.of(state.tasks)..add(task))));
-  }
+  //   res.fold(
+  //       (failure) =>
+  //           emit(state.copyWith(status: TaskStatus.failure, failure: failure)),
+  //       (task) => emit(state.copyWith(
+  //           status: TaskStatus.success,
+  //           tasks: List.of(state.tasks)..add(task))));
+  // }
 
   void _onUpdateTask(
     UpdateTask event,
@@ -100,7 +98,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       return emit(state.copyWith(
           status: TaskStatus.success,
           tasks: List.of(state.tasks)
-            ..removeAt(id)
+            ..removeAt(id!)
             ..insert(id, task)));
     });
   }
@@ -123,7 +121,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           state.tasks.firstWhere((element) => element.id == event.task.id).id;
       return emit(state.copyWith(
           status: TaskStatus.success,
-          tasks: List.of(state.tasks)..removeAt(id)));
+          tasks: List.of(state.tasks)..removeAt(id!)));
     });
   }
 }
