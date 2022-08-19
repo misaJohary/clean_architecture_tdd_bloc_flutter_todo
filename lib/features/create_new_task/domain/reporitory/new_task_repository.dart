@@ -6,4 +6,5 @@ import '../../../task/domain/entity/task_entity.dart';
 
 abstract class NewTaskRepository {
   Future<Either<Failure, TaskEntity>> createTask(TaskModel task);
+  Future<Either<Failure, TaskEntity>> updateTask(TaskEntity task);
 }

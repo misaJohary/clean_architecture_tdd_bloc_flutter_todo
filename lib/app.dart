@@ -19,7 +19,13 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => getIt<TaskBloc>()..add(OnFindTasks()),
+          create: (_) => getIt<TaskBloc>()
+            ..add(
+              OnFindTasks(),
+            )
+            ..add(
+              OnFindTodayAndFutureTasks(),
+            ),
         ),
         BlocProvider(
           create: (_) => getIt<NewTaskBloc>(),

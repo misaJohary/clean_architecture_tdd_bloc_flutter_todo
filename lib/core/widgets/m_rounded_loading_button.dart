@@ -10,6 +10,7 @@ class MRoundedLoadingButton extends StatelessWidget {
   final Color? color;
   final Color? spinColor;
   final double? elevation;
+  final bool animateOnTap;
 
   const MRoundedLoadingButton({
     Key? key,
@@ -21,7 +22,8 @@ class MRoundedLoadingButton extends StatelessWidget {
     this.color,
     this.spinColor,
     this.elevation,
-  }) : super(key: key);
+  })  : animateOnTap = true,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,7 @@ class MRoundedLoadingButton extends StatelessWidget {
       elevation: elevation ?? 2,
       controller: controller,
       onPressed: onPressed,
+      animateOnTap: animateOnTap,
       child: child,
     );
   }

@@ -3,72 +3,47 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/helpers/unfocus_keyboard.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/m_rounded_loading_button.dart';
-import '../../../task/presentation/bloc/task_bloc.dart';
 import '../bloc/new_task_bloc.dart';
+import '../../../task/domain/entity/task_entity.dart';
+import '../../../task/presentation/bloc/task_bloc.dart';
 
-class NewTask extends StatelessWidget {
-  const NewTask({
-    Key? key,
-  }) : super(key: key);
+class UpdateTaskWidget extends StatelessWidget {
+  const UpdateTaskWidget({Key? key, this.task}) : super(key: key);
+
+  final TaskEntity? task;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        extendBody: true,
-        appBar: CustomAppBar(
-          onPressed: () {
-            Navigator.of(context).pop();
-            context.read<TaskBloc>()
-              ..add(OnFindTasks())
-              ..add(OnFindTodayAndFutureTasks());
-          },
-          title: AppLocalizations.of(context)!.addNewTask,
-          actions: [
-            BlocBuilder<NewTaskBloc, NewTaskState>(
-              builder: (context, state) {
-                return MRoundedLoadingButton(
-                  width: 40,
-                  height: 40,
-                  elevation: 0,
-                  controller: state.controller,
-                  onPressed: () {
-                    unfocusKeyboard();
-                    context.read<NewTaskBloc>().add(OnAddNewTask(context));
-                  },
-                  child: const Icon(
-                    Icons.add_circle_outline_rounded,
-                  ),
-                );
-              },
-            )
-          ],
+    return Form(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20.0,
+          vertical: 10,
         ),
-        body: Form(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 10,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: const [
+            //     _InputDate(),
+            //     SizedBox(width: 10),
+            //     _InputTime(),
+            //   ],
+            // ),
+            const _InputDate(),
+            const SizedBox(height: 10),
+            const _InputTime(),
+            const SizedBox(
+              height: 10,
             ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    _InputDate(),
-                    _InputTime(),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const _InputName(),
-                const _InputDescription(),
-              ],
-            ),
-          ),
+            const _InputName(),
+            const _InputDescription(),
+            const SizedBox(height: 10),
+            _UpdateButton(task: task),
+          ],
         ),
       ),
     );
@@ -83,6 +58,7 @@ class _InputName extends StatelessWidget {
     return BlocBuilder<NewTaskBloc, NewTaskState>(
       builder: (context, state) {
         return TextFormField(
+          initialValue: state.title.value,
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.inputTaskName,
             errorText: state.titleError,
@@ -106,6 +82,7 @@ class _InputDescription extends StatelessWidget {
     return BlocBuilder<NewTaskBloc, NewTaskState>(
       builder: (context, state) {
         return TextFormField(
+          initialValue: state.description,
           decoration: InputDecoration(
             hintText: AppLocalizations.of(context)!.inputTaskDescription,
           ),
@@ -130,8 +107,11 @@ class _InputDate extends StatelessWidget {
       onPressed: () {
         context.read<NewTaskBloc>().add(OnDateSelected(context));
       },
-      heroTag: null,
+
       icon: const Icon(Icons.calendar_month_rounded),
+      // SizedBox(
+      //   width: 5,
+      // ),
       label: BlocBuilder<NewTaskBloc, NewTaskState>(
         builder: (context, state) {
           return Text(state.date);
@@ -147,16 +127,59 @@ class _InputTime extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
-      heroTag: null,
       onPressed: () {
         context.read<NewTaskBloc>().add(OnTimeSelected(context));
       },
+      // child: Row(
+      //   children: [
       icon: const Icon(Icons.access_time_rounded),
+      // SizedBox(
+      //   width: 4,
+      // ),
       label: BlocBuilder<NewTaskBloc, NewTaskState>(
         builder: (context, state) {
           return Text(state.time);
         },
+        //   ),
+        // ],
       ),
+    );
+  }
+}
+
+class _UpdateButton extends StatelessWidget {
+  const _UpdateButton({Key? key, this.task}) : super(key: key);
+
+  final TaskEntity? task;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<NewTaskBloc, NewTaskState>(
+      builder: (context, state) {
+        return MRoundedLoadingButton(
+          width: 100,
+          controller: state.updateButtonController,
+          onPressed: () {
+            unfocusKeyboard();
+            context.read<NewTaskBloc>().add(
+                  OnUpdateTask(
+                    task: TaskEntity(
+                      id: task!.id,
+                      name: state.title.value,
+                      description: state.description ?? '',
+                      date: '${state.date} ${state.time}',
+                      isDone: task!.isDone,
+                    ),
+                    context: context,
+                  ),
+                );
+            context.read<TaskBloc>()
+              ..add(OnFindTasks())
+              ..add(OnFindTodayAndFutureTasks());
+          },
+          child: const Text('Update'),
+        );
+      },
     );
   }
 }

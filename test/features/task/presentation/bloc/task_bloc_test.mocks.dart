@@ -12,16 +12,12 @@ import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart'
     as _i7;
 import 'package:my_todo_clean/features/task/domain/repository/task_repository.dart'
     as _i2;
-import 'package:my_todo_clean/features/task/domain/usecases/create_task.dart'
-    as _i9;
 import 'package:my_todo_clean/features/task/domain/usecases/delete_task.dart'
-    as _i11;
+    as _i9;
 import 'package:my_todo_clean/features/task/domain/usecases/find_tasks.dart'
     as _i4;
 import 'package:my_todo_clean/features/task/domain/usecases/find_todays_tasks.dart'
     as _i8;
-import 'package:my_todo_clean/features/task/domain/usecases/update_task.dart'
-    as _i10;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -84,55 +80,17 @@ class MockFindTodaysTask extends _i1.Mock implements _i8.FindTodaysTask {
           returnValue: <_i7.TaskEntity>[]) as List<_i7.TaskEntity>);
 }
 
-/// A class which mocks [CreateTaskUseCase].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockCreateTaskUseCase extends _i1.Mock implements _i9.CreateTaskUseCase {
-  MockCreateTaskUseCase() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>> call(
-          _i9.AddTaskParam? params) =>
-      (super.noSuchMethod(Invocation.method(#call, [params]),
-              returnValue:
-                  _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>>.value(
-                      _FakeEither_1<_i6.Failure, _i7.TaskEntity>(
-                          this, Invocation.method(#call, [params]))))
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>>);
-}
-
-/// A class which mocks [UpdateTaskUsecase].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockUpdateTaskUsecase extends _i1.Mock implements _i10.UpdateTaskUsecase {
-  MockUpdateTaskUsecase() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>> call(
-          _i10.UpdateTaskParam? params) =>
-      (super.noSuchMethod(Invocation.method(#call, [params]),
-              returnValue:
-                  _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>>.value(
-                      _FakeEither_1<_i6.Failure, _i7.TaskEntity>(
-                          this, Invocation.method(#call, [params]))))
-          as _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>>);
-}
-
 /// A class which mocks [DeleteTask].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDeleteTask extends _i1.Mock implements _i11.DeleteTask {
+class MockDeleteTask extends _i1.Mock implements _i9.DeleteTask {
   MockDeleteTask() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
   _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>> call(
-          _i11.DeleteTaskParam? params) =>
+          _i9.DeleteTaskParam? params) =>
       (super.noSuchMethod(Invocation.method(#call, [params]),
               returnValue:
                   _i5.Future<_i3.Either<_i6.Failure, _i7.TaskEntity>>.value(

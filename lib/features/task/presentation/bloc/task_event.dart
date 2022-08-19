@@ -11,24 +11,6 @@ class OnFindTasks extends TaskEvent {}
 
 class OnFindTodayTasks extends TaskEvent {}
 
-// class OnCreateTask extends TaskEvent {
-//   final TaskModel task;
-
-//   const OnCreateTask(this.task);
-
-//   @override
-//   List<Object> get props => [task];
-// }
-
-class UpdateTask extends TaskEvent {
-  final TaskEntity task;
-
-  const UpdateTask(this.task);
-
-  @override
-  List<Object> get props => [task];
-}
-
 class OnDeleteTask extends TaskEvent {
   final TaskEntity task;
 
@@ -36,3 +18,5 @@ class OnDeleteTask extends TaskEvent {
   @override
   List<Object> get props => [task];
 }
+
+class OnFindTodayAndFutureTasks extends TaskEvent {}

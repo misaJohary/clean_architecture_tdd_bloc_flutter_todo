@@ -31,15 +31,6 @@ class TaskRepositoryImp implements TaskRepository {
   }
 
   @override
-  Future<Either<Failure, TaskEntity>> updateTask(TaskEntity task) async {
-    try {
-      return Right(await _taskLocalDataSource.updateTask(task));
-    } catch (_) {
-      return const Left(CacheFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, TaskEntity>> deleteTask(TaskEntity task) async {
     try {
       return Right(await _taskLocalDataSource.deleteTask(task));

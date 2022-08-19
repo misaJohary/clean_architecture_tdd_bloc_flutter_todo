@@ -23,9 +23,9 @@ class AllTaskPage extends StatelessWidget {
             case TaskStatus.success:
               return ListView.builder(
                 itemBuilder: ((context, index) => TaskWidget(
-                      task: state.tasks[index],
+                      task: state.todayTasks[index],
                     )),
-                itemCount: state.tasks.length,
+                itemCount: state.todayTasks.length,
               );
 
             default:

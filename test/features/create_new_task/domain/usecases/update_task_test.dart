@@ -3,15 +3,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:my_todo_clean/core/error/failure.dart';
+import 'package:my_todo_clean/features/create_new_task/domain/reporitory/new_task_repository.dart';
 import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart';
 import 'package:my_todo_clean/features/task/domain/repository/task_repository.dart';
-import 'package:my_todo_clean/features/task/domain/usecases/update_task.dart';
+import 'package:my_todo_clean/features/create_new_task/domain/usecases/update_task.dart';
 
-import 'create_task_test.mocks.dart';
+import 'create_task_usecase_test.mocks.dart';
 
-@GenerateMocks([TaskRepository])
+@GenerateMocks([NewTaskRepository])
 void main() {
-  late MockTaskRepository mockTaskRepository;
+  late MockNewTaskRepository mockTaskRepository;
   late UpdateTaskUsecase updateTask;
 
   const TaskEntity tTask = TaskEntity(
@@ -23,7 +24,7 @@ void main() {
   );
 
   setUp(() {
-    mockTaskRepository = MockTaskRepository();
+    mockTaskRepository = MockNewTaskRepository();
     updateTask = UpdateTaskUsecase(mockTaskRepository);
   });
 

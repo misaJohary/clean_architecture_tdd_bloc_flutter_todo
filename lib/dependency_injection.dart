@@ -13,7 +13,7 @@ import 'features/task/domain/repository/task_repository.dart';
 import 'features/task/domain/usecases/delete_task.dart';
 import 'features/task/domain/usecases/find_tasks.dart';
 import 'features/task/domain/usecases/find_todays_tasks.dart';
-import 'features/task/domain/usecases/update_task.dart';
+import 'features/create_new_task/domain/usecases/update_task.dart';
 import 'features/task/presentation/bloc/task_bloc.dart';
 
 final getIt = GetIt.instance;
@@ -89,8 +89,6 @@ void bloc() {
     () => TaskBloc(
       findTasks: getIt(),
       findTodaysTask: getIt(),
-      // createTask: getIt(),
-      updateTask: getIt(),
       deleteTask: getIt(),
     ),
   );
@@ -98,6 +96,7 @@ void bloc() {
   getIt.registerFactory<NewTaskBloc>(
     () => NewTaskBloc(
       createTask: getIt(),
+      updateTask: getIt(),
     ),
   );
 }

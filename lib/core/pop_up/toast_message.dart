@@ -14,8 +14,8 @@ void successMessage(BuildContext context, String message) {
   final fToast = initToast(context);
 
   fToast.showToast(
-    child: const SuccessToastWidget(
-      message: 'adding new task successfully',
+    child: SuccessToastWidget(
+      message: message,
     ),
     gravity: ToastGravity.BOTTOM,
     toastDuration: const Duration(seconds: 2),
@@ -26,8 +26,8 @@ void failureMessage(BuildContext context, String message) {
   final fToast = initToast(context);
 
   fToast.showToast(
-    child: const FailureToastWidget(
-      message: 'failed adding new task',
+    child: FailureToastWidget(
+      message: message,
     ),
     gravity: ToastGravity.BOTTOM,
     toastDuration: const Duration(seconds: 2),

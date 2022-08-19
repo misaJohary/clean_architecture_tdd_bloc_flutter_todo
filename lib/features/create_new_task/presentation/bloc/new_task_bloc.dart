@@ -12,15 +12,21 @@ import '../../../../core/error/failure.dart';
 import '../../../../core/helpers/datetime_factory.dart';
 import '../../../../core/pop_up/toast_message.dart';
 import '../../../task/data/model/task_model.dart';
+import '../../../task/domain/entity/task_entity.dart';
 import '../../data/models/task_title.dart';
 import '../../domain/usecases/create_task_usecase.dart';
+import '../../domain/usecases/update_task.dart';
 
 part 'new_task_event.dart';
 part 'new_task_state.dart';
 
 class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
   final CreateTaskUseCase createTask;
-  NewTaskBloc({required this.createTask}) : super(NewTaskInitial()) {
+  final UpdateTaskUsecase updateTask;
+  NewTaskBloc({
+    required this.createTask,
+    required this.updateTask,
+  }) : super(NewTaskInitial()) {
     on<OnCreateTask>(_onCreateTask);
     on<OnVerifyNewTask>(_onVerifyNewTask);
     on<OnTaskTitleChanged>(_onTaskTitleChanged);
@@ -28,6 +34,9 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     on<OnAddNewTask>(_onAddNewTask);
     on<OnDateSelected>(_onDateSelected);
     on<OnTimeSelected>(_onTimeSelected);
+    on<OnInitializeTask>(_onInitializeTask);
+    on<OnUpdateTask>(_onUpdateTask);
+    on<OnSwitchMarkTask>(_onSwitchMarkTask);
   }
 
   void _onCreateTask(
@@ -148,6 +157,67 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
         time: time,
       ),
     );
+  }
+
+  void _onInitializeTask(
+    OnInitializeTask event,
+    Emitter<NewTaskState> emit,
+  ) {
+    final dateTime = DateTimeFactoryImp().stringToDateTime(event.task.date);
+    final time = DateFormat('HH:mm').format(dateTime);
+    final date = DateFormat('yyyy-MM-dd').format(dateTime);
+
+    emit(
+      state.copyWith(
+        time: time,
+        date: date,
+        title: TaskTitle.dirty(event.task.name),
+        description: event.task.description,
+      ),
+    );
+  }
+
+  void _onUpdateTask(
+    OnUpdateTask event,
+    Emitter<NewTaskState> emit,
+  ) async {
+    emit(state.copyWith(
+      status: NewTaskStatus.loading,
+    ));
+    final res = await updateTask(UpdateTaskParam(event.task));
+    state.updateButtonController.stop();
+
+    res.fold((failure) {
+      failureMessage(event.context, 'Task update failed');
+      return emit(
+          state.copyWith(status: NewTaskStatus.failure, failure: failure));
+    }, (task) {
+      successMessage(event.context, 'Task updated successfully');
+      return emit(
+        state.copyWith(
+          status: NewTaskStatus.success,
+        ),
+      );
+    });
+  }
+
+  void _onSwitchMarkTask(
+    OnSwitchMarkTask event,
+    Emitter<NewTaskState> emit,
+  ) async {
+    add(
+      OnUpdateTask(
+        context: event.context,
+        task: TaskEntity.switchMarkDone(event.task),
+      ),
+    );
+    // final res = await updateTask(UpdateTaskParam(event.task));
+
+    // res.fold((failure) {
+    //   failureMessage(event.context, 'Failed');
+    // }, (task) {
+    //   successMessage(event.context, 'Success');
+    // });
   }
 }
 

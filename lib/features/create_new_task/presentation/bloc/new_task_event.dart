@@ -69,3 +69,44 @@ class OnTimeSelected extends NewTaskEvent {
   @override
   List<Object> get props => [context];
 }
+
+class OnInitializeTask extends NewTaskEvent {
+  final TaskEntity task;
+
+  const OnInitializeTask(this.task);
+
+  @override
+  List<Object> get props => [task];
+}
+
+class OnUpdateTask extends NewTaskEvent {
+  final TaskEntity task;
+  final BuildContext context;
+
+  const OnUpdateTask({
+    required this.context,
+    required this.task,
+  });
+
+  @override
+  List<Object> get props => [
+        task,
+        context,
+      ];
+}
+
+class OnSwitchMarkTask extends NewTaskEvent {
+  final TaskEntity task;
+  final BuildContext context;
+
+  const OnSwitchMarkTask({
+    required this.context,
+    required this.task,
+  });
+
+  @override
+  List<Object> get props => [
+        task,
+        context,
+      ];
+}
