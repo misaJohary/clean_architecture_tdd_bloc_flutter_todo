@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
+import '../../../../core/helpers/unfocus_keyboard.dart';
 import '../../../../core/widgets/m_rounded_loading_button.dart';
-import '../../../create_new_task/presentation/bloc/new_task_bloc.dart';
-import '../../domain/entity/task_entity.dart';
-import '../bloc/task_bloc.dart';
+import '../bloc/new_task_bloc.dart';
+import '../../../task/domain/entity/task_entity.dart';
+import '../../../task/presentation/bloc/task_bloc.dart';
 
 class UpdateTaskWidget extends StatelessWidget {
   const UpdateTaskWidget({Key? key, this.task}) : super(key: key);
@@ -154,28 +155,28 @@ class _UpdateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TaskBloc, TaskState>(
-      builder: (context, taskState) {
-        return BlocBuilder<NewTaskBloc, NewTaskState>(
-          builder: (context, state) {
-            return MRoundedLoadingButton(
-                width: 100,
-                controller: taskState.updateButtonController,
-                onPressed: () {
-                  context.read<TaskBloc>().add(
-                        UpdateTask(
-                          TaskEntity(
-                            id: task!.id,
-                            name: state.title.value,
-                            description: state.description ?? '',
-                            date: '${state.date} ${state.time}',
-                            isDone: task!.isDone,
-                          ),
-                        ),
-                      );
-                },
-                child: const Text('Update'));
+    return BlocBuilder<NewTaskBloc, NewTaskState>(
+      builder: (context, state) {
+        return MRoundedLoadingButton(
+          width: 100,
+          controller: state.updateButtonController,
+          onPressed: () {
+            unfocusKeyboard();
+            context.read<NewTaskBloc>().add(
+                  OnUpdateTask(
+                    task: TaskEntity(
+                      id: task!.id,
+                      name: state.title.value,
+                      description: state.description ?? '',
+                      date: '${state.date} ${state.time}',
+                      isDone: task!.isDone,
+                    ),
+                    context: context,
+                  ),
+                );
+            context.read<TaskBloc>().add(OnFindTasks());
           },
+          child: const Text('Update'),
         );
       },
     );

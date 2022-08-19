@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/usecase/usecase.dart';
-import '../entity/task_entity.dart';
-import '../repository/task_repository.dart';
+import '../../../task/domain/entity/task_entity.dart';
+import '../reporitory/new_task_repository.dart';
 
 class UpdateTaskUsecase implements Usecase<TaskEntity, UpdateTaskParam> {
-  final TaskRepository _repository;
+  final NewTaskRepository _repository;
 
   const UpdateTaskUsecase(this._repository);
 

@@ -3,11 +3,12 @@ import 'package:equatable/equatable.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../../core/error/failure.dart';
+import '../../../../core/helpers/datetime_factory.dart';
 import '../../domain/entity/task_entity.dart';
 import '../../domain/usecases/delete_task.dart';
 import '../../domain/usecases/find_tasks.dart';
 import '../../domain/usecases/find_todays_tasks.dart';
-import '../../domain/usecases/update_task.dart';
+import '../../../create_new_task/domain/usecases/update_task.dart';
 
 part 'task_event.dart';
 part 'task_state.dart';
@@ -15,22 +16,16 @@ part 'task_state.dart';
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final FindTasks findTasks;
   final FindTodaysTask findTodaysTask;
-  // final CreateTaskUseCase createTask;
-  final UpdateTaskUsecase updateTask;
   final DeleteTask deleteTask;
   TaskBloc({
     required this.findTasks,
     required this.findTodaysTask,
-    // required this.createTask,
-    required this.updateTask,
     required this.deleteTask,
   }) : super(TaskInitial()) {
     on<OnFindTasks>(_onFindTasks);
     on<OnFindTodayTasks>(_onFindTodayTasks);
-    // on<OnCreateTask>(_onCreateTask);
-    on<UpdateTask>(_onUpdateTask);
     on<OnDeleteTask>(_onDeleteTask);
-    on<SwitchMarkTask>(_onSwitchMarkTask);
+    on<OnFindTodayAndFutureTasks>(_onFindTodayAndFutureTasks);
   }
 
   void _onFindTasks(
@@ -66,44 +61,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     emit(state.copyWith(status: TaskStatus.success, todayTasks: todays));
   }
 
-  void _onUpdateTask(
-    UpdateTask event,
-    Emitter<TaskState> emit,
-  ) async {
-    emit(state.copyWith(
-      status: TaskStatus.loading,
-    ));
-    final res = await updateTask(UpdateTaskParam(event.task));
-    state.updateButtonController.stop();
-
-    res.fold(
-        (failure) =>
-            emit(state.copyWith(status: TaskStatus.failure, failure: failure)),
-        (task) {
-      final id =
-          state.tasks.indexWhere((element) => element.id == event.task.id);
-      return emit(
-        state.copyWith(
-          status: TaskStatus.success,
-          tasks: List.of(state.tasks)
-            ..removeAt(id)
-            ..insert(id, task),
-        ),
-      );
-    });
-  }
-
-  void _onSwitchMarkTask(
-    SwitchMarkTask event,
-    Emitter<TaskState> emit,
-  ) {
-    add(
-      UpdateTask(
-        TaskEntity.switchMarkDone(event.task),
-      ),
-    );
-  }
-
   void _onDeleteTask(
     OnDeleteTask event,
     Emitter<TaskState> emit,
@@ -127,5 +84,23 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         ),
       );
     });
+  }
+
+  void _onFindTodayAndFutureTasks(
+    OnFindTodayAndFutureTasks event,
+    Emitter<TaskState> emit,
+  ) {
+    emit(state.copyWith(status: TaskStatus.loading));
+    final todayAndFutureTasks = state.tasks
+        .where((task) =>
+            DateTime.now()
+                .isBefore(DateTimeFactoryImp().stringToDateTime(task.date)) ||
+            DateTime.now()
+                .isSameDate(DateTimeFactoryImp().stringToDateTime(task.date)))
+        .toList();
+
+    todayAndFutureTasks.sort((a, b) => a.date.compareTo(b.date));
+    emit(state.copyWith(
+        todayAndFutureTasks: todayAndFutureTasks, status: TaskStatus.success));
   }
 }

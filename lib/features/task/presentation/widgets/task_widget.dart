@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../create_new_task/presentation/bloc/new_task_bloc.dart';
 import '../../domain/entity/task_entity.dart';
 import '../bloc/task_bloc.dart';
-import 'update_task_widget.dart';
+import '../../../create_new_task/presentation/widgets/update_task_widget.dart';
 
 class TaskWidget extends StatelessWidget {
   final TaskEntity task;
@@ -51,7 +51,13 @@ class TaskWidget extends StatelessWidget {
             color: Colors.greenAccent,
             iconSize: 15,
             onTap: () {
-              context.read<TaskBloc>().add(SwitchMarkTask(task));
+              context.read<NewTaskBloc>().add(
+                    OnSwitchMarkTask(
+                      task: task,
+                      context: context,
+                    ),
+                  );
+              context.read<TaskBloc>().add(OnFindTasks());
             },
             padding: 5),
       ],

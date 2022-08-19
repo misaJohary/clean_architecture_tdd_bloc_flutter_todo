@@ -13,6 +13,7 @@ class NewTaskState extends Equatable {
     this.formStatus,
     this.titleError,
     required this.controller,
+    required this.updateButtonController,
   });
   final NewTaskStatus status;
   final Failure? failure;
@@ -23,6 +24,7 @@ class NewTaskState extends Equatable {
   final FormzStatus? formStatus;
   final String? titleError;
   final RoundedLoadingButtonController controller;
+  final RoundedLoadingButtonController updateButtonController;
 
   NewTaskState copyWith({
     NewTaskStatus? status,
@@ -35,6 +37,7 @@ class NewTaskState extends Equatable {
     String? titleError,
     bool clearTitleError = false,
     RoundedLoadingButtonController? controller,
+    RoundedLoadingButtonController? updateButtonController,
   }) =>
       NewTaskState(
         status: status ?? this.status,
@@ -46,6 +49,8 @@ class NewTaskState extends Equatable {
         formStatus: formStatus ?? this.formStatus,
         titleError: clearTitleError ? null : titleError ?? this.titleError,
         controller: controller ?? this.controller,
+        updateButtonController:
+            updateButtonController ?? this.updateButtonController,
       );
   @override
   List<Object?> get props => [
@@ -58,6 +63,7 @@ class NewTaskState extends Equatable {
         formStatus,
         titleError,
         controller,
+        updateButtonController,
       ];
 }
 
@@ -70,5 +76,6 @@ class NewTaskInitial extends NewTaskState {
           date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
           time: DateFormat('HH:mm').format(DateTime.now()),
           controller: RoundedLoadingButtonController(),
+          updateButtonController: RoundedLoadingButtonController(),
         );
 }

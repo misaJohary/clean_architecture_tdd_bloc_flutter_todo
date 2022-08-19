@@ -20,7 +20,7 @@ import 'package:my_todo_clean/features/task/domain/usecases/find_tasks.dart'
     as _i4;
 import 'package:my_todo_clean/features/task/domain/usecases/find_todays_tasks.dart'
     as _i8;
-import 'package:my_todo_clean/features/task/domain/usecases/update_task.dart'
+import 'package:my_todo_clean/features/create_new_task/domain/usecases/update_task.dart'
     as _i10;
 
 // ignore_for_file: type=lint

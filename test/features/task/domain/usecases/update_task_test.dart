@@ -5,7 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:my_todo_clean/core/error/failure.dart';
 import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart';
 import 'package:my_todo_clean/features/task/domain/repository/task_repository.dart';
-import 'package:my_todo_clean/features/task/domain/usecases/update_task.dart';
+import 'package:my_todo_clean/features/create_new_task/domain/usecases/update_task.dart';
 
 import 'create_task_test.mocks.dart';
 
