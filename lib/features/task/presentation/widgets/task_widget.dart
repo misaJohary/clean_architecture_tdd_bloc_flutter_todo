@@ -83,7 +83,7 @@ class TaskWidget extends StatelessWidget {
                   ),
                 ),
           title: Text(task.name),
-          subtitle: Text(task.date),
+          subtitle: Text(task.description),
         ),
       ),
     );

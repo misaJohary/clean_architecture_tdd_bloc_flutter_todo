@@ -8,7 +8,6 @@ import '../../domain/entity/task_entity.dart';
 import '../../domain/usecases/delete_task.dart';
 import '../../domain/usecases/find_tasks.dart';
 import '../../domain/usecases/find_todays_tasks.dart';
-import '../../../create_new_task/domain/usecases/update_task.dart';
 
 part 'task_event.dart';
 part 'task_state.dart';
@@ -39,6 +38,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       ),
     );
     final res = await findTasks(NoParams());
+    add(OnFindTodayAndFutureTasks());
+    add(OnFindTodayTasks());
 
     res.fold(
       (failure) => emit(
@@ -77,12 +78,13 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         (task) {
       final id =
           state.tasks.indexWhere((element) => element.id == event.task.id);
-      return emit(
+      emit(
         state.copyWith(
           status: TaskStatus.success,
           tasks: List.of(state.tasks)..removeAt(id),
         ),
       );
+      add(OnFindTodayAndFutureTasks());
     });
   }
 
@@ -90,17 +92,23 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     OnFindTodayAndFutureTasks event,
     Emitter<TaskState> emit,
   ) {
-    emit(state.copyWith(status: TaskStatus.loading));
-    final todayAndFutureTasks = state.tasks
-        .where((task) =>
-            DateTime.now()
-                .isBefore(DateTimeFactoryImp().stringToDateTime(task.date)) ||
-            DateTime.now()
-                .isSameDate(DateTimeFactoryImp().stringToDateTime(task.date)))
-        .toList();
+    if (state.tasks.isNotEmpty) {
+      emit(state.copyWith(status: TaskStatus.loading));
+      final todayAndFutureTasks = state.tasks
+          .where((task) =>
+              DateTime.now()
+                  .isBefore(DateTimeFactoryImp().stringToDateTime(task.date)) ||
+              DateTime.now()
+                  .isSameDate(DateTimeFactoryImp().stringToDateTime(task.date)))
+          .toList();
 
-    todayAndFutureTasks.sort((a, b) => a.date.compareTo(b.date));
-    emit(state.copyWith(
-        todayAndFutureTasks: todayAndFutureTasks, status: TaskStatus.success));
+      todayAndFutureTasks.sort((a, b) => a.date.compareTo(b.date));
+      emit(
+        state.copyWith(
+          todayAndFutureTasks: todayAndFutureTasks,
+          status: TaskStatus.success,
+        ),
+      );
+    }
   }
 }

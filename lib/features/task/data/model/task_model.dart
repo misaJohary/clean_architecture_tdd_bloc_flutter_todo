@@ -1,5 +1,3 @@
-import 'package:dartz/dartz.dart';
-
 import '../../domain/entity/task_entity.dart';
 
 class TaskModel extends TaskEntity {
@@ -20,7 +18,7 @@ class TaskModel extends TaskEntity {
       );
 
   Map<String, dynamic> toJson() => {
-        'id': this.id,
+        'id': id,
         'name': name,
         'description': description,
         'date': date,

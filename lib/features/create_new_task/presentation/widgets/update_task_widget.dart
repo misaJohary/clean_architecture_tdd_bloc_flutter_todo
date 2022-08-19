@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../../core/helpers/unfocus_keyboard.dart';
 import '../../../../core/widgets/m_rounded_loading_button.dart';
@@ -34,15 +33,15 @@ class UpdateTaskWidget extends StatelessWidget {
             //     _InputTime(),
             //   ],
             // ),
-            _InputDate(),
-            SizedBox(height: 10),
-            _InputTime(),
-            SizedBox(
+            const _InputDate(),
+            const SizedBox(height: 10),
+            const _InputTime(),
+            const SizedBox(
               height: 10,
             ),
-            _InputName(),
-            _InputDescription(),
-            SizedBox(height: 10),
+            const _InputName(),
+            const _InputDescription(),
+            const SizedBox(height: 10),
             _UpdateButton(task: task),
           ],
         ),
@@ -174,7 +173,9 @@ class _UpdateButton extends StatelessWidget {
                     context: context,
                   ),
                 );
-            context.read<TaskBloc>().add(OnFindTasks());
+            context.read<TaskBloc>()
+              ..add(OnFindTasks())
+              ..add(OnFindTodayAndFutureTasks());
           },
           child: const Text('Update'),
         );

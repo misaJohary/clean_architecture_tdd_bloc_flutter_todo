@@ -21,7 +21,9 @@ class NewTask extends StatelessWidget {
         appBar: CustomAppBar(
           onPressed: () {
             Navigator.of(context).pop();
-            context.read<TaskBloc>().add(OnFindTasks());
+            context.read<TaskBloc>()
+              ..add(OnFindTasks())
+              ..add(OnFindTodayAndFutureTasks());
           },
           title: AppLocalizations.of(context)!.addNewTask,
           actions: [
