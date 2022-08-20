@@ -12,14 +12,20 @@ class ListCategoryWidget extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children: const [
-          CategoryWidget(
-            name: 'All',
-            isChecked: true,
+        children: [
+          InkWell(
+            onTap: () {},
+            child: CategoryWidget(
+              name: 'All',
+              isChecked: true,
+            ),
           ),
-          CategoryWidget(
-            name: 'Today',
-            isChecked: false,
+          GestureDetector(
+            onTap: () {},
+            child: CategoryWidget(
+              name: 'Today',
+              isChecked: false,
+            ),
           ),
           CategoryWidget(
             name: 'Unfinished',

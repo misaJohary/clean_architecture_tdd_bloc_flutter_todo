@@ -23,11 +23,20 @@ class BaseToastWidget extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon),
+          Icon(
+            icon,
+            color: Colors.white,
+          ),
           const SizedBox(
             width: 12.0,
           ),
-          Text(message),
+          Text(
+            message,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1!
+                .copyWith(color: Colors.white),
+          ),
         ],
       ),
     );

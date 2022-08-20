@@ -67,9 +67,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     OnDeleteTask event,
     Emitter<TaskState> emit,
   ) async {
-    emit(state.copyWith(
-      status: TaskStatus.loading,
-    ));
+    // emit(state.copyWith(
+    //   status: TaskStatus.loading,
+    // ));
 
     final res = await deleteTask(DeleteTaskParam(event.task));
 
@@ -85,7 +85,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           tasks: List.of(state.tasks)..removeAt(id),
         ),
       );
-      add(OnFindTodayAndFutureTasks());
+      add(OnUpdateTasks());
     });
   }
 

@@ -8,14 +8,13 @@ import 'package:my_todo_clean/features/task/domain/usecases/find_todays_tasks.da
 
 import 'find_todays_tasks_test.mocks.dart';
 
-@GenerateMocks([DateTimeFactory])
 void main() {
   late MockDateTimeFactory dateTimeFactory;
   late FindTodaysTask findTodaysTask;
 
   setUp(() {
     dateTimeFactory = MockDateTimeFactory();
-    findTodaysTask = FindTodaysTask(dateTimeFactory);
+    findTodaysTask = FindTodaysTask();
   });
 
   final today = DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());

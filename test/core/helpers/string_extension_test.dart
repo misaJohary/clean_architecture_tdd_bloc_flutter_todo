@@ -54,7 +54,7 @@ void main() {
 
   group('date time test with hour', () {
     test(
-      'to datetime',
+      'yyyy-MM-dd HH:mm',
       () {
         const date = '2022-10-24 13:23';
         expect(date.toDateTime(), DateTime(2022, 10, 24, 13, 23));
@@ -62,7 +62,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'dd-MM-yyyy HH:mm',
       () {
         const date = '24-10-2022 14:21';
         expect(date.toDateTime(), DateTime(2022, 10, 24, 14, 21));
@@ -70,7 +70,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'dd/MM/yyyy HH:mm',
       () {
         const date = '24/10/2022 14:21';
         expect(date.toDateTime(), DateTime(2022, 10, 24, 14, 21));
@@ -78,7 +78,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'yyyy/MM/dd HH:mm',
       () {
         const date = '2022/10/24 14:21';
         expect(date.toDateTime(), DateTime(2022, 10, 24, 14, 21));
@@ -88,7 +88,7 @@ void main() {
 
   group('date time test without hour', () {
     test(
-      'to datetime',
+      'yyyy-MM-dd',
       () {
         const date = '2022-10-24';
         expect(date.toDateTime(), DateTime(2022, 10, 24));
@@ -96,7 +96,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'dd-MM-yyyy',
       () {
         const date = '24-10-2022';
         expect(date.toDateTime(), DateTime(2022, 10, 24));
@@ -104,7 +104,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'dd/MM/yyyy',
       () {
         const date = '24/10/2022';
         expect(date.toDateTime(), DateTime(2022, 10, 24));
@@ -112,7 +112,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'yyyy/MM/dd',
       () {
         const date = '2022/10/24';
         expect(date.toDateTime(), DateTime(2022, 10, 24));
@@ -122,7 +122,7 @@ void main() {
 
   group('dateTimeDateOnly', () {
     test(
-      'to datetime',
+      'yyyy-MM-dd HH:mm',
       () {
         const date = '2022-10-24 13:23';
         expect(date.toDateTimeDateOnly(), DateTime(2022, 10, 24));
@@ -130,7 +130,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'dd-MM-yyyy HH:mm',
       () {
         const date = '24-10-2022 14:21';
         expect(date.toDateTimeDateOnly(), DateTime(2022, 10, 24));
@@ -138,7 +138,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'dd/MM/yyyy HH:mm',
       () {
         const date = '24/10/2022 14:21';
         expect(date.toDateTimeDateOnly(), DateTime(2022, 10, 24));
@@ -146,7 +146,7 @@ void main() {
     );
 
     test(
-      'to datetime not formatted',
+      'yyy/MM/dd HH:mm',
       () {
         const date = '2022/10/24 14:21';
         expect(date.toDateTimeDateOnly(), DateTime(2022, 10, 24));
