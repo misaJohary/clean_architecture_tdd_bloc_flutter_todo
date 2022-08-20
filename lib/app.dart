@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'core/routes/app_routes.dart';
 import 'core/services/l10n/l10n.dart';
+import 'core/theme/bloc/theme_bloc.dart';
 import 'core/theme/theme.dart';
 import 'dependency_injection.dart';
 
@@ -29,20 +30,29 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (_) => getIt<NewTaskBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => ThemeBloc(),
         )
       ],
-      child: MaterialApp(
-        title: 'To do',
-        debugShowCheckedModeBanner: false,
-        theme: theme,
-        supportedLocales: L10n.all,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        routes: AppRoute.routes,
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'To do',
+            debugShowCheckedModeBanner: false,
+            themeMode: state.themeMode,
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            supportedLocales: L10n.all,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            routes: AppRoute.routes,
+          );
+        },
       ),
     );
   }

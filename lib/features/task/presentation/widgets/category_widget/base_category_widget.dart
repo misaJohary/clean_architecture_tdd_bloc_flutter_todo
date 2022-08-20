@@ -61,14 +61,14 @@ class BaseCategoryWidget extends StatelessWidget {
                 style: Theme.of(context)
                     .textTheme
                     .headline6!
-                    .copyWith(color: isChecked ? Colors.white : strong),
+                    .copyWith(color: isChecked ? Colors.white : medium),
               ),
               Text(
                 'Done : ${category.numberTasks}',
                 style: Theme.of(context)
                     .textTheme
                     .headline6!
-                    .copyWith(color: isChecked ? Colors.white : strong),
+                    .copyWith(color: isChecked ? Colors.white : medium),
               ),
             ],
           ),
