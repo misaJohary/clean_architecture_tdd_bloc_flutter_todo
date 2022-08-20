@@ -158,7 +158,7 @@ class _UpdateButton extends StatelessWidget {
       builder: (context, state) {
         return MRoundedLoadingButton(
           width: 100,
-          controller: state.updateButtonController,
+          controller: state.updateButtonController!,
           onPressed: () {
             unfocusKeyboard();
             context.read<NewTaskBloc>().add(

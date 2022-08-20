@@ -33,7 +33,8 @@ class NewTask extends StatelessWidget {
                   width: 40,
                   height: 40,
                   elevation: 0,
-                  controller: state.controller,
+                  color: Colors.transparent,
+                  controller: state.controller!,
                   onPressed: () {
                     unfocusKeyboard();
                     context.read<NewTaskBloc>().add(OnAddNewTask(context));

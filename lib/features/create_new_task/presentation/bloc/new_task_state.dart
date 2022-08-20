@@ -12,8 +12,8 @@ class NewTaskState extends Equatable {
     required this.time,
     this.formStatus,
     this.titleError,
-    required this.controller,
-    required this.updateButtonController,
+    this.controller,
+    this.updateButtonController,
   });
   final NewTaskStatus status;
   final Failure? failure;
@@ -23,8 +23,8 @@ class NewTaskState extends Equatable {
   final String time;
   final FormzStatus? formStatus;
   final String? titleError;
-  final RoundedLoadingButtonController controller;
-  final RoundedLoadingButtonController updateButtonController;
+  final RoundedLoadingButtonController? controller;
+  final RoundedLoadingButtonController? updateButtonController;
 
   NewTaskState copyWith({
     NewTaskStatus? status,

@@ -123,8 +123,6 @@ void main() {
   setUp(() {
     mockFindTasks = MockFindTasks();
     mockFindTodaysTask = MockFindTodaysTask();
-    // mockCreateTaskUseCase = MockCreateTaskUseCase();
-    mockUpdateTaskUsecase = MockUpdateTaskUsecase();
     mockDeleteTask = MockDeleteTask();
     taskBloc = TaskBloc(
       findTasks: mockFindTasks,

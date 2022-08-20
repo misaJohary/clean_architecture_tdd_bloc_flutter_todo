@@ -10,6 +10,7 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/helpers/datetime_factory.dart';
+import '../../../../core/helpers/string_extension.dart';
 import '../../../../core/pop_up/toast_message.dart';
 import '../../../task/data/model/task_model.dart';
 import '../../../task/domain/entity/task_entity.dart';
@@ -49,7 +50,7 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
       ),
     );
     final res = await createTask(AddTaskParam(event.task));
-    state.controller.stop();
+    state.controller?.stop();
 
     res.fold((failure) {
       failureMessage(event.context,
@@ -112,7 +113,7 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     Emitter<NewTaskState> emit,
   ) {
     if (!state.formStatus!.isValidated) {
-      state.controller.stop();
+      state.controller?.stop();
       return add(OnVerifyNewTask());
     } else {
       emit(state.copyWith(clearTitleError: true));
@@ -132,13 +133,13 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
   ) async {
     final DateTime? picked = await showDatePicker(
       context: event.context,
-      initialDate: DateTimeFactoryImp().stringToDateTime(state.date),
+      initialDate: (state.date).toDateTime(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2025),
     );
     emit(
       state.copyWith(
-        date: DateTimeFactoryImp().dateTimeToString(picked!),
+        date: (picked!).toFormattedString(),
       ),
     );
   }
@@ -163,7 +164,7 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     OnInitializeTask event,
     Emitter<NewTaskState> emit,
   ) {
-    final dateTime = DateTimeFactoryImp().stringToDateTime(event.task.date);
+    final dateTime = (event.task.date).toDateTime();
     final time = DateFormat('HH:mm').format(dateTime);
     final date = DateFormat('yyyy-MM-dd').format(dateTime);
 
@@ -185,14 +186,14 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
       status: NewTaskStatus.loading,
     ));
     final res = await updateTask(UpdateTaskParam(event.task));
-    state.updateButtonController.stop();
+    state.updateButtonController?.stop();
 
     res.fold((failure) {
-      failureMessage(event.context, 'Task update failed');
+      failureMessage(event.context!, 'Task update failed');
       return emit(
           state.copyWith(status: NewTaskStatus.failure, failure: failure));
     }, (task) {
-      successMessage(event.context, 'Task updated successfully');
+      successMessage(event.context!, 'Task updated successfully');
       return emit(
         state.copyWith(
           status: NewTaskStatus.success,

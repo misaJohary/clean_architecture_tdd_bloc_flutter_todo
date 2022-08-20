@@ -60,7 +60,9 @@ void main() {
               .thenAnswer((_) async => const Right(tTaskModel));
           return newTaskBloc;
         }),
-        act: (_) => newTaskBloc.add(const OnCreateTask(tTaskModel)),
+        act: (_) => newTaskBloc.add(const OnCreateTask(
+              task: tTaskModel,
+            )),
         wait: const Duration(milliseconds: 100),
         expect: () => [
               taskInitialState,

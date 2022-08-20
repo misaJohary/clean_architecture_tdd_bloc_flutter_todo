@@ -49,4 +49,53 @@ void main() {
       },
     );
   });
+
+  group('DateTime to string', () {
+    test(
+      'with minute and second',
+      () {
+        final date = DateTime(2022, 10, 24, 13, 30);
+
+        expect(date.toFormattedString(), '24-10-2022 13:30');
+      },
+    );
+
+    test(
+      'without minute and second',
+      () {
+        final date = DateTime(2022, 10, 24);
+
+        expect(date.toFormattedString(), '24-10-2022');
+      },
+    );
+  });
+
+  // group('String to datetime date only', () {
+  //   test(
+  //     'with date time without hour',
+  //     () {
+  //       final tDate = DateTime(
+  //         2022,
+  //         10,
+  //         24,
+  //       );
+  //       final res = DateTimeFactoryImp().stringToDateTimeDateOnly('2022-10-24');
+  //       expect(res, tDate);
+  //     },
+  //   );
+
+  //   test(
+  //     'with string with hour',
+  //     () {
+  //       final tDate = DateTime(
+  //         2022,
+  //         10,
+  //         24,
+  //       );
+  //       final res =
+  //           DateTimeFactoryImp().stringToDateTimeDateOnly('2022-10-24 12:34');
+  //       expect(res, tDate);
+  //     },
+  //   );
+  // });
 }

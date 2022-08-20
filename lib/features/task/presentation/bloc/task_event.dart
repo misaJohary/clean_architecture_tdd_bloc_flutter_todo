@@ -20,3 +20,5 @@ class OnDeleteTask extends TaskEvent {
 }
 
 class OnFindTodayAndFutureTasks extends TaskEvent {}
+
+class OnUpdateTasks extends TaskEvent {}

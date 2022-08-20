@@ -4,6 +4,8 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../../core/error/failure.dart';
 import '../../../../core/helpers/datetime_factory.dart';
+import '../../../../core/helpers/string_extension.dart';
+import '../../../create_new_task/presentation/bloc/new_task_bloc.dart';
 import '../../domain/entity/task_entity.dart';
 import '../../domain/usecases/delete_task.dart';
 import '../../domain/usecases/find_tasks.dart';
@@ -25,6 +27,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<OnFindTodayTasks>(_onFindTodayTasks);
     on<OnDeleteTask>(_onDeleteTask);
     on<OnFindTodayAndFutureTasks>(_onFindTodayAndFutureTasks);
+    on<OnUpdateTasks>(_onUpdateTasks);
   }
 
   void _onFindTasks(
@@ -38,16 +41,17 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       ),
     );
     final res = await findTasks(NoParams());
-    add(OnFindTodayAndFutureTasks());
-    add(OnFindTodayTasks());
 
     res.fold(
       (failure) => emit(
         state.copyWith(status: TaskStatus.failure, failure: failure),
       ),
-      (tasks) => emit(
-        state.copyWith(status: TaskStatus.success, tasks: tasks),
-      ),
+      (tasks) {
+        emit(
+          state.copyWith(status: TaskStatus.success, tasks: tasks),
+        );
+        add(OnUpdateTasks());
+      },
     );
   }
 
@@ -55,11 +59,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     OnFindTodayTasks event,
     Emitter<TaskState> emit,
   ) {
-    emit(state.copyWith(
-      status: TaskStatus.loading,
-    ));
     final todays = findTodaysTask(state.tasks);
-    emit(state.copyWith(status: TaskStatus.success, todayTasks: todays));
+    emit(state.copyWith(todayTasks: todays));
   }
 
   void _onDeleteTask(
@@ -93,22 +94,26 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     Emitter<TaskState> emit,
   ) {
     if (state.tasks.isNotEmpty) {
-      emit(state.copyWith(status: TaskStatus.loading));
       final todayAndFutureTasks = state.tasks
           .where((task) =>
-              DateTime.now()
-                  .isBefore(DateTimeFactoryImp().stringToDateTime(task.date)) ||
-              DateTime.now()
-                  .isSameDate(DateTimeFactoryImp().stringToDateTime(task.date)))
+              DateTime.now().isBefore((task.date).toDateTime()) ||
+              DateTime.now().isSameDate((task.date).toDateTime()))
           .toList();
 
       todayAndFutureTasks.sort((a, b) => a.date.compareTo(b.date));
       emit(
         state.copyWith(
           todayAndFutureTasks: todayAndFutureTasks,
-          status: TaskStatus.success,
         ),
       );
     }
+  }
+
+  void _onUpdateTasks(
+    OnUpdateTasks event,
+    Emitter<TaskState> emit,
+  ) {
+    add(OnFindTodayAndFutureTasks());
+    add(OnFindTodayTasks());
   }
 }

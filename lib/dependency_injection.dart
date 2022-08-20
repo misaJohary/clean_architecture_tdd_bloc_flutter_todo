@@ -34,9 +34,7 @@ void usecase() {
   );
 
   getIt.registerLazySingleton(
-    () => FindTodaysTask(
-      getIt(),
-    ),
+    () => FindTodaysTask(),
   );
 
   getIt.registerLazySingleton(
@@ -103,5 +101,5 @@ void bloc() {
 
 void external() {
   getIt.registerLazySingleton<DbService>(() => DbServiceImp());
-  getIt.registerLazySingleton<DateTimeFactory>(() => DateTimeFactoryImp());
+  // getIt.registerLazySingleton<DateTimeFactory>(() => DateTimeFactoryImp());
 }

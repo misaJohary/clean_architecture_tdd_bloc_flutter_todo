@@ -4,7 +4,7 @@ abstract class NewTaskEvent extends Equatable {
   const NewTaskEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class OnCreateTask extends NewTaskEvent {
@@ -81,15 +81,15 @@ class OnInitializeTask extends NewTaskEvent {
 
 class OnUpdateTask extends NewTaskEvent {
   final TaskEntity task;
-  final BuildContext context;
+  final BuildContext? context;
 
   const OnUpdateTask({
-    required this.context,
+    this.context,
     required this.task,
   });
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         task,
         context,
       ];

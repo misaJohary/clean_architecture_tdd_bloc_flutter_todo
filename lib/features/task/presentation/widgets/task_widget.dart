@@ -1,6 +1,7 @@
 import 'package:circular_menu/circular_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/theme/theme.dart';
 import '../../../create_new_task/presentation/bloc/new_task_bloc.dart';
 import '../../domain/entity/task_entity.dart';
 import '../bloc/task_bloc.dart';
@@ -62,8 +63,8 @@ class TaskWidget extends StatelessWidget {
             padding: 5),
       ],
       radius: 40,
-      alignment: Alignment.centerRight,
-      toggleButtonIconColor: Colors.black,
+      alignment: Alignment.topRight,
+      toggleButtonIconColor: strong,
       toggleButtonSize: 18,
       toggleButtonAnimatedIconData: AnimatedIcons.menu_close,
       backgroundWidget: Card(
@@ -74,16 +75,23 @@ class TaskWidget extends StatelessWidget {
                   onPressed: () {},
                   icon: const Icon(
                     Icons.check_circle_outline_rounded,
+                    color: strong,
                   ),
                 )
               : IconButton(
                   onPressed: () {},
                   icon: const Icon(
                     Icons.circle_outlined,
+                    color: strong,
                   ),
                 ),
-          title: Text(task.name),
-          subtitle: Text(task.description),
+          title: Text(
+            task.name,
+            style: const TextStyle(color: medium),
+          ),
+          subtitle: Text(
+            task.description,
+          ),
         ),
       ),
     );
