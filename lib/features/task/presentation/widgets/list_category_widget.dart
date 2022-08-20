@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../bloc/task_bloc.dart';
 import 'category_widget/category_widget.dart';
 
 class ListCategoryWidget extends StatelessWidget {
@@ -10,28 +12,13 @@ class ListCategoryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          InkWell(
-            onTap: () {},
-            child: CategoryWidget(
-              name: 'All',
-              isChecked: true,
-            ),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: CategoryWidget(
-              name: 'Today',
-              isChecked: false,
-            ),
-          ),
-          CategoryWidget(
-            name: 'Unfinished',
-            isChecked: false,
-          ),
-        ],
+      child: BlocBuilder<TaskBloc, TaskState>(
+        builder: (context, state) => ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: state.categories.length,
+          itemBuilder: (context, index) =>
+              CategoryWidget(category: state.categories[index]),
+        ),
       ),
     );
   }

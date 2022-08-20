@@ -6,6 +6,7 @@ import '../../../../core/error/failure.dart';
 import '../../../../core/helpers/datetime_factory.dart';
 import '../../../../core/helpers/string_extension.dart';
 import '../../../create_new_task/presentation/bloc/new_task_bloc.dart';
+import '../../domain/entity/category.dart';
 import '../../domain/entity/task_entity.dart';
 import '../../domain/usecases/delete_task.dart';
 import '../../domain/usecases/find_tasks.dart';
@@ -28,6 +29,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     on<OnDeleteTask>(_onDeleteTask);
     on<OnFindTodayAndFutureTasks>(_onFindTodayAndFutureTasks);
     on<OnUpdateTasks>(_onUpdateTasks);
+    on<OnChangeCategory>(_onChangeCategory);
+    on<OnUpdateCategoryLength>(_onUpdateCategoryLenght);
   }
 
   void _onFindTasks(
@@ -101,6 +104,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           .toList();
 
       todayAndFutureTasks.sort((a, b) => a.date.compareTo(b.date));
+
       emit(
         state.copyWith(
           todayAndFutureTasks: todayAndFutureTasks,
@@ -109,11 +113,46 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     }
   }
 
+  void _onChangeCategory(
+    OnChangeCategory event,
+    Emitter<TaskState> emit,
+  ) {
+    final categories = state.categories.map((category) {
+      if (category.type == event.categoryType) {
+        return category.copyWith(isChecked: true);
+      }
+      return category.copyWith(isChecked: false);
+    }).toList();
+    emit(state.copyWith(
+        categorySelected: event.categoryType, categories: categories));
+  }
+
+  void _onUpdateCategoryLenght(
+    OnUpdateCategoryLength event,
+    Emitter<TaskState> emit,
+  ) {
+    final categories = state.categories.map((category) {
+      switch (category.type) {
+        case CategoryType.all:
+          return category.copyWith(
+              numberTasks: state.todayAndFutureTasks.length);
+
+        case CategoryType.today:
+          return category.copyWith(numberTasks: state.todayTasks.length);
+
+        default:
+          return category;
+      }
+    }).toList();
+    emit(state.copyWith(categories: categories));
+  }
+
   void _onUpdateTasks(
     OnUpdateTasks event,
     Emitter<TaskState> emit,
   ) {
     add(OnFindTodayAndFutureTasks());
     add(OnFindTodayTasks());
+    add(OnUpdateCategoryLength());
   }
 }

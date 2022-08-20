@@ -18,7 +18,7 @@ ThemeData theme = ThemeData(
       surfaceTintColor: light,
     ),
   ),
-  listTileTheme: ListTileThemeData(
+  listTileTheme: const ListTileThemeData(
     iconColor: strong,
   ),
   splashColor: mColor,
