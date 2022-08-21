@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../../../../core/widgets/drawer/app_drawer.dart';
 import '../../../../core/widgets/drawer_widget.dart';
 import '../widgets/widgets.dart';
 
@@ -10,6 +10,7 @@ class AllTaskPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: const AppDrawer(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [

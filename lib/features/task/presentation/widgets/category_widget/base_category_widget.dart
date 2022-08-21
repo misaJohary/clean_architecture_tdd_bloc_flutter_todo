@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 import '../../../../../core/theme/theme.dart';
+import '../../../domain/entity/category.dart';
 
 class BaseCategoryWidget extends StatelessWidget {
   const BaseCategoryWidget({
     Key? key,
-    required this.name,
-    required this.isChecked,
+    required this.category,
   }) : super(key: key);
 
-  final String name;
-  final bool isChecked;
+  final Category category;
+
+  // final String name;
+  // final bool isChecked;
 
   @override
   Widget build(BuildContext context) {
+    final isChecked = category.isChecked;
     return Card(
       color: isChecked ? mColor : null,
       surfaceTintColor: isChecked ? mColor : Colors.white,
@@ -36,7 +40,7 @@ class BaseCategoryWidget extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                name,
+                '${category.name} (${category.numberTasks})',
                 style: isChecked
                     ? Theme.of(context)
                         .textTheme
@@ -45,6 +49,29 @@ class BaseCategoryWidget extends StatelessWidget {
                     : Theme.of(context).textTheme.bodyText2,
               ),
             ],
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: PieChart(
+              chartRadius: 50,
+              ringStrokeWidth: 5,
+              centerText:
+                  '${(category.numberDone / category.numberTasks * 100).toStringAsFixed(1)}%',
+              dataMap: {'done': category.numberDone.toDouble()},
+              centerTextStyle: TextStyle(
+                  color: isChecked ? Colors.grey : strong, fontSize: 12),
+              chartType: ChartType.ring,
+              baseChartColor: isChecked ? Colors.white : Colors.grey[400]!,
+              chartValuesOptions: const ChartValuesOptions(
+                showChartValues: false,
+                showChartValueBackground: false,
+              ),
+              totalValue: category.numberTasks.toDouble(),
+              chartLegendSpacing: 30,
+            ),
           ),
         )
       ]),

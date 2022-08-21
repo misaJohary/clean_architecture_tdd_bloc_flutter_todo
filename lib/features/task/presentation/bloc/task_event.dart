@@ -22,3 +22,14 @@ class OnDeleteTask extends TaskEvent {
 class OnFindTodayAndFutureTasks extends TaskEvent {}
 
 class OnUpdateTasks extends TaskEvent {}
+
+class OnChangeCategory extends TaskEvent {
+  final CategoryType categoryType;
+
+  const OnChangeCategory(this.categoryType);
+
+  @override
+  List<Object> get props => [categoryType];
+}
+
+class OnUpdateCategoryLength extends TaskEvent {}

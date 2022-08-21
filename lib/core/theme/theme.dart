@@ -7,7 +7,8 @@ const mColor = Color(0xFFfadcd9);
 const medium = Color(0xFFf8afa6);
 const strong = Color(0xFFf79489);
 
-ThemeData theme = ThemeData(
+ThemeData lightTheme = ThemeData(
+  brightness: Brightness.light,
   scaffoldBackgroundColor: light,
   fontFamily: 'Comfortaa',
   primaryColor: Colors.white,
@@ -18,12 +19,15 @@ ThemeData theme = ThemeData(
       surfaceTintColor: light,
     ),
   ),
-  listTileTheme: ListTileThemeData(
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      primary: strong,
+    ),
+  ),
+  listTileTheme: const ListTileThemeData(
     iconColor: strong,
   ),
   splashColor: mColor,
-  // buttonTheme: const ButtonThemeData(buttonColor: Colors.white),
-
   useMaterial3: true,
   appBarTheme: const AppBarTheme(
     elevation: 0,
@@ -67,3 +71,5 @@ ThemeData theme = ThemeData(
     ),
   ),
 );
+
+ThemeData darkTheme = ThemeData(brightness: Brightness.dark);
