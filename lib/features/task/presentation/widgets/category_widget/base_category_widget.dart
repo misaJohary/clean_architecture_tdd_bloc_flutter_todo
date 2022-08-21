@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 import '../../../../../core/theme/theme.dart';
 import '../../../domain/entity/category.dart';
@@ -52,25 +53,25 @@ class BaseCategoryWidget extends StatelessWidget {
         ),
         Align(
           alignment: Alignment.bottomCenter,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Total : ${category.numberTasks}',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: isChecked ? Colors.white : medium),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 18.0),
+            child: PieChart(
+              chartRadius: 50,
+              ringStrokeWidth: 5,
+              centerText:
+                  '${(category.numberDone / category.numberTasks * 100).toStringAsFixed(1)}%',
+              dataMap: {'done': category.numberDone.toDouble()},
+              centerTextStyle: TextStyle(
+                  color: isChecked ? Colors.grey : strong, fontSize: 12),
+              chartType: ChartType.ring,
+              baseChartColor: isChecked ? Colors.white : Colors.grey[400]!,
+              chartValuesOptions: const ChartValuesOptions(
+                showChartValues: false,
+                showChartValueBackground: false,
               ),
-              Text(
-                'Done : ${category.numberTasks}',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6!
-                    .copyWith(color: isChecked ? Colors.white : medium),
-              ),
-            ],
+              totalValue: category.numberTasks.toDouble(),
+              chartLegendSpacing: 30,
+            ),
           ),
         )
       ]),

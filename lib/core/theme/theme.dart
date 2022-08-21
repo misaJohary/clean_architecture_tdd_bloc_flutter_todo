@@ -19,6 +19,11 @@ ThemeData lightTheme = ThemeData(
       surfaceTintColor: light,
     ),
   ),
+  textButtonTheme: TextButtonThemeData(
+    style: TextButton.styleFrom(
+      primary: strong,
+    ),
+  ),
   listTileTheme: const ListTileThemeData(
     iconColor: strong,
   ),

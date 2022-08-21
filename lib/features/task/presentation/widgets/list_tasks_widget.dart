@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:grouped_list/grouped_list.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../create_new_task/presentation/bloc/new_task_bloc.dart';
 import 'task_skeleton_widget.dart';
 import 'task_widget.dart';
 
@@ -27,34 +29,46 @@ class ListTasksWidget extends StatelessWidget {
             );
 
           case TaskStatus.success:
-            return Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: BlocBuilder<TaskBloc, TaskState>(
-                builder: (context, state) {
-                  List<TaskEntity> taskToShow = [];
+            return BlocBuilder<TaskBloc, TaskState>(
+              builder: (context, state) {
+                List<TaskEntity> taskToShow = [];
 
-                  switch (state.categorySelected) {
-                    case CategoryType.all:
-                      taskToShow = state.todayAndFutureTasks;
-                      break;
-                    case CategoryType.today:
-                      taskToShow = state.todayTasks;
-                      break;
-                    case CategoryType.unfinished:
-                      taskToShow = state.todayTasks;
-                      break;
-                    default:
-                      taskToShow = state.todayAndFutureTasks;
-                  }
+                switch (state.categorySelected) {
+                  case CategoryType.all:
+                    taskToShow = state.todayAndFutureTasks;
+                    break;
+                  case CategoryType.today:
+                    taskToShow = state.todayTasks;
+                    break;
+                  case CategoryType.unfinished:
+                    taskToShow = state.todayTasks;
+                    break;
+                  default:
+                    taskToShow = state.todayAndFutureTasks;
+                }
 
-                  return GroupedListView(
+                if (taskToShow.isEmpty) {
+                  return Center(
+                    child: TextButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed(AppRoute.newTaskPage);
+                      },
+                      label: const Text('Add New Task now !'),
+                      icon: const Icon(Icons.add),
+                    ),
+                  );
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: GroupedListView(
                     elements: taskToShow,
                     groupBy: (TaskEntity task) =>
                         (task.date).toDateTimeDateOnly(),
                     groupSeparatorBuilder: (DateTime group) {
                       String header;
                       if (group.isSameDate(DateTime.now())) {
-                        header = 'Today';
+                        header = 'Today,   ${group.toFormattedString()}';
                       } else {
                         header = group.toFormattedString();
                       }
@@ -72,9 +86,9 @@ class ListTasksWidget extends StatelessWidget {
                     },
                     itemBuilder: (context, TaskEntity task) =>
                         TaskWidget(task: task),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             );
 
           default:

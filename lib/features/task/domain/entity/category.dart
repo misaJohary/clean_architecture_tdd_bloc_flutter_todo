@@ -7,18 +7,22 @@ class Category extends Equatable {
   final CategoryType type;
   final bool isChecked;
   final int numberTasks;
+  final int numberDone;
 
   const Category({
     required this.name,
     required this.type,
     required this.isChecked,
     required this.numberTasks,
+    required this.numberDone,
   });
-  Category copyWith({int? numberTasks, bool? isChecked}) => Category(
+  Category copyWith({int? numberTasks, bool? isChecked, int? numberDone}) =>
+      Category(
         name: name,
         type: type,
         isChecked: isChecked ?? this.isChecked,
         numberTasks: numberTasks ?? this.numberTasks,
+        numberDone: numberDone ?? this.numberDone,
       );
 
   @override
@@ -27,5 +31,6 @@ class Category extends Equatable {
         type,
         isChecked,
         numberTasks,
+        numberDone,
       ];
 }

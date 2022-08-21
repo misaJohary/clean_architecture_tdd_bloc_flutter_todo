@@ -71,19 +71,25 @@ class TaskInitial extends TaskState {
             updateButtonController: RoundedLoadingButtonController(),
             categories: const [
               Category(
-                  name: 'All',
-                  type: CategoryType.all,
-                  isChecked: true,
-                  numberTasks: 0),
+                name: 'All',
+                type: CategoryType.all,
+                isChecked: true,
+                numberTasks: 0,
+                numberDone: 0,
+              ),
               Category(
-                  name: 'Today',
-                  type: CategoryType.today,
-                  isChecked: false,
-                  numberTasks: 0),
+                name: 'Today',
+                type: CategoryType.today,
+                isChecked: false,
+                numberTasks: 0,
+                numberDone: 0,
+              ),
               Category(
-                  name: 'Unfinished',
-                  type: CategoryType.unfinished,
-                  isChecked: false,
-                  numberTasks: 0),
+                name: 'Unfinished',
+                type: CategoryType.unfinished,
+                isChecked: false,
+                numberTasks: 0,
+                numberDone: 0,
+              ),
             ]);
 }
