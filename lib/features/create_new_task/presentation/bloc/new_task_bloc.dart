@@ -121,7 +121,7 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
         name: state.title.value,
         description: state.description ?? '',
         date: '${state.date} ${state.time}',
-        isDone: false,
+        isDone: true,
       );
       add(OnCreateTask(context: event.context, task: newTask));
     }

@@ -15,9 +15,12 @@ class AppDrawer extends StatelessWidget {
       builder: (context, state) {
         return SafeArea(
           child: Scaffold(
-            backgroundColor: medium,
+            backgroundColor: Theme.of(context).backgroundColor,
             body: SwitchListTile(
-                title: const Text('light theme'),
+                title: Text(
+                  'light theme',
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
                 value: state.themeMode == ThemeMode.light,
                 onChanged: (value) {
                   context.read<ThemeBloc>().add(SwitchThemeEvent());

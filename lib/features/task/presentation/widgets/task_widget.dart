@@ -33,6 +33,8 @@ class TaskWidget extends StatelessWidget {
           child: CircularMenu(
             startingAngleInRadian: 2.61799,
             endingAngleInRadian: 4.71239,
+            toggleButtonColor: Colors.white,
+            toggleButtonIconColor: Theme.of(context).colorScheme.onSecondary,
             items: [
               CircularMenuItem(
                   icon: Icons.edit,
@@ -81,30 +83,29 @@ class TaskWidget extends StatelessWidget {
             ],
             radius: 40,
             alignment: Alignment.topRight,
-            toggleButtonIconColor: strong,
+            // toggleButtonIconColor: strong,
             toggleButtonSize: 18,
             toggleButtonAnimatedIconData: AnimatedIcons.menu_close,
             backgroundWidget: Card(
-              surfaceTintColor: Colors.white,
+              surfaceTintColor: light,
               child: ListTile(
                 leading: task.isDone
                     ? IconButton(
                         onPressed: () {},
-                        icon: const Icon(
-                          Icons.check_circle_outline_rounded,
-                          color: strong,
-                        ),
+                        icon: Icon(Icons.check_circle_outline_rounded,
+                            // color: strong,
+                            color: Theme.of(context).iconTheme.color),
                       )
                     : IconButton(
                         onPressed: () {},
-                        icon: const Icon(
-                          Icons.circle_outlined,
-                          color: strong,
-                        ),
+                        icon: Icon(Icons.circle_outlined,
+                            color: Theme.of(context).iconTheme.color
+                            // color: strong,
+                            ),
                       ),
                 title: Text(
                   task.description,
-                  style: const TextStyle(color: medium),
+                  // style: const TextStyle(color: medium),
                 ),
                 subtitle: Text(
                   DateFormat('HH : mm').format(

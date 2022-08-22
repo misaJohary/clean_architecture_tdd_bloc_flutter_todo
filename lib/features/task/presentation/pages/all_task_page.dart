@@ -22,7 +22,7 @@ class AllTaskPage extends StatelessWidget {
             mainScreen: const Body(),
             borderRadius: 24.0,
             showShadow: true,
-            menuBackgroundColor: medium,
+            menuBackgroundColor: Theme.of(context).backgroundColor,
             mainScreenTapClose: true,
             angle: 0.0,
             drawerShadowsBackgroundColor: Colors.grey[300]!,

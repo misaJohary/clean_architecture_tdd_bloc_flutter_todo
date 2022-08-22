@@ -16,7 +16,7 @@ class HeadlineWidget extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .headline3!
-            .copyWith(color: strong, fontFamily: 'DancingScript'),
+            .copyWith(fontFamily: 'DancingScript'),
       ),
     );
   }
