@@ -18,6 +18,7 @@ class BaseCategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isChecked = category.isChecked;
+    // final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Card(
       color: isChecked ? mColor : null,
       surfaceTintColor: isChecked ? mColor : Colors.white,
@@ -64,7 +65,7 @@ class BaseCategoryWidget extends StatelessWidget {
               centerTextStyle: TextStyle(
                   color: isChecked ? Colors.grey : strong, fontSize: 12),
               chartType: ChartType.ring,
-              baseChartColor: isChecked ? Colors.white : Colors.grey[400]!,
+              baseChartColor: isChecked ? Colors.white : light,
               chartValuesOptions: const ChartValuesOptions(
                 showChartValues: false,
                 showChartValueBackground: false,

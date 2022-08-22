@@ -14,6 +14,7 @@ class TaskState extends Equatable {
     this.updateButtonController,
     required this.categorySelected,
     required this.categories,
+    required this.drawerController,
   });
 
   final TaskStatus status;
@@ -24,6 +25,7 @@ class TaskState extends Equatable {
   final RoundedLoadingButtonController? updateButtonController;
   final CategoryType categorySelected;
   final List<Category> categories;
+  final ZoomDrawerController drawerController;
 
   TaskState copyWith({
     TaskStatus? status,
@@ -34,6 +36,7 @@ class TaskState extends Equatable {
     RoundedLoadingButtonController? updateButtonController,
     CategoryType? categorySelected,
     List<Category>? categories,
+    ZoomDrawerController? drawerController,
   }) =>
       TaskState(
         status: status ?? this.status,
@@ -45,6 +48,7 @@ class TaskState extends Equatable {
             updateButtonController ?? this.updateButtonController,
         categorySelected: categorySelected ?? this.categorySelected,
         categories: categories ?? this.categories,
+        drawerController: drawerController ?? this.drawerController,
       );
 
   @override
@@ -57,6 +61,7 @@ class TaskState extends Equatable {
         todayAndFutureTasks,
         categorySelected,
         categories,
+        drawerController,
       ];
 }
 
@@ -69,6 +74,7 @@ class TaskInitial extends TaskState {
     super.categorySelected = CategoryType.all,
   }) : super(
             updateButtonController: RoundedLoadingButtonController(),
+            drawerController: ZoomDrawerController(),
             categories: const [
               Category(
                 name: 'All',

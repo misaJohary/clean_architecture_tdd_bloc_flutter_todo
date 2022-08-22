@@ -11,7 +11,12 @@ ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   scaffoldBackgroundColor: light,
   fontFamily: 'Comfortaa',
-  primaryColor: Colors.white,
+  primaryColor: mColor,
+  switchTheme: SwitchThemeData(
+    thumbColor: MaterialStateProperty.all(strong),
+    trackColor: MaterialStateProperty.all(light),
+    overlayColor: MaterialStateProperty.all(Colors.transparent),
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       primary: light,
@@ -19,6 +24,7 @@ ThemeData lightTheme = ThemeData(
       surfaceTintColor: light,
     ),
   ),
+  visualDensity: VisualDensity.adaptivePlatformDensity,
   textButtonTheme: TextButtonThemeData(
     style: TextButton.styleFrom(
       primary: strong,
@@ -72,4 +78,5 @@ ThemeData lightTheme = ThemeData(
   ),
 );
 
-ThemeData darkTheme = ThemeData(brightness: Brightness.dark);
+ThemeData darkTheme =
+    ThemeData(brightness: Brightness.dark, accentColor: Colors.grey);

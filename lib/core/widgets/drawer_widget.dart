@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../features/task/presentation/bloc/task_bloc.dart';
 import '../theme/theme.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -11,14 +13,18 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      return IconButton(
-        onPressed: () {
-          Scaffold.of(context).openDrawer();
+      return BlocBuilder<TaskBloc, TaskState>(
+        builder: (context, state) {
+          return IconButton(
+            onPressed: () {
+              state.drawerController.open!();
+            },
+            icon: SvgPicture.asset(
+              'assets/images/icon_drawer.svg',
+              color: strong,
+            ),
+          );
         },
-        icon: SvgPicture.asset(
-          'assets/images/icon_drawer.svg',
-          color: strong,
-        ),
       );
     });
   }

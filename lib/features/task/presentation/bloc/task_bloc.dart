@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 import '../../../../core/error/failure.dart';
