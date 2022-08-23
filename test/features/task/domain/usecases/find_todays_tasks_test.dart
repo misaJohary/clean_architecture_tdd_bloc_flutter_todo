@@ -1,19 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:my_todo_clean/core/helpers/datetime_factory.dart';
 import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/find_todays_tasks.dart';
 
-import 'find_todays_tasks_test.mocks.dart';
-
 void main() {
-  late MockDateTimeFactory dateTimeFactory;
   late FindTodaysTask findTodaysTask;
 
   setUp(() {
-    dateTimeFactory = MockDateTimeFactory();
     findTodaysTask = FindTodaysTask();
   });
 
@@ -111,12 +105,6 @@ void main() {
   test(
     'Should return today\'s tasks',
     () {
-      when(dateTimeFactory.stringToDateTime(today))
-          .thenReturn(DateTime.parse(today));
-
-      when(dateTimeFactory.stringToDateTime(later))
-          .thenReturn(DateTime.parse(later));
-
       final res = findTodaysTask(tTasks);
       expect(
         res,
@@ -128,12 +116,6 @@ void main() {
   test(
     'Should return [] when there is no today tasks',
     () {
-      when(dateTimeFactory.stringToDateTime(today))
-          .thenReturn(DateTime.parse(today));
-
-      when(dateTimeFactory.stringToDateTime(later))
-          .thenReturn(DateTime.parse(later));
-
       final res = findTodaysTask(tTasksNoToday);
       expect(
         res,

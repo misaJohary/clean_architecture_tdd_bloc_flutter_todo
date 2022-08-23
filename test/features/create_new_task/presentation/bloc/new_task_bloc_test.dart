@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
@@ -25,7 +26,7 @@ void main() {
     id: 0,
     name: 'test',
     description: 'another test',
-    date: '',
+    date: '23-08-2022 12:23',
     isDone: false,
   );
 
@@ -37,11 +38,11 @@ void main() {
     isDone: false,
   );
 
-  NewTaskState taskInitialState = NewTaskState(
-    status: NewTaskStatus.loading,
-    title: const TaskTitle.pure(),
-    date: DateFormat('yyyy-MM-dd').format(DateTime.now()),
-    time: DateFormat('HH:mm').format(DateTime.now()),
+  const NewTaskState taskInitialState = NewTaskState(
+    updateStatus: NewTaskStatus.loading,
+    title: TaskTitle.pure(),
+    date: '23-08-2022',
+    time: '12:23',
   );
 
   setUp(() {
@@ -60,31 +61,20 @@ void main() {
               .thenAnswer((_) async => const Right(tTaskModel));
           return newTaskBloc;
         }),
-        act: (_) => newTaskBloc.add(const OnCreateTask(
-              task: tTaskModel,
-            )),
-        wait: const Duration(milliseconds: 100),
-        expect: () => [
-              taskInitialState,
-              const NewTaskState(
-                status: NewTaskStatus.success,
-              )
-            ]);
-
-    blocTest('should add the new task in the end of the list task',
-        build: (() {
-          when(mockCreateTaskUseCase(any))
-              .thenAnswer((_) async => const Right(tTaskModel));
-          return newTaskBloc;
-        }),
-        act: (_) => newTaskBloc.add(const OnCreateTask(tTaskModel)),
-        seed: () => const NewTaskState(
-              status: NewTaskStatus.loading,
+        seed: () => taskInitialState,
+        act: (_) => newTaskBloc.add(
+              const OnCreateTask(
+                task: tTaskModel,
+              ),
             ),
         wait: const Duration(milliseconds: 100),
         expect: () => [
-              NewTaskState(
+              const NewTaskState(
                 status: NewTaskStatus.success,
+                title: TaskTitle.pure(),
+                description: null,
+                date: '23-08-2022',
+                time: '12:23',
               )
             ]);
 
@@ -95,13 +85,16 @@ void main() {
               .thenAnswer((_) async => const Left(CacheFailure()));
           return newTaskBloc;
         }),
-        act: (_) => newTaskBloc.add(const OnCreateTask(tTaskModel)),
+        seed: () => taskInitialState,
+        act: (_) => newTaskBloc.add(const OnCreateTask(task: tTaskModel)),
         wait: const Duration(milliseconds: 100),
         expect: () => [
-              taskInitialState,
               const NewTaskState(
                 status: NewTaskStatus.failure,
                 failure: CacheFailure(),
+                title: TaskTitle.pure(),
+                date: '23-08-2022',
+                time: '12:23',
               )
             ]);
   });
@@ -113,14 +106,21 @@ void main() {
               .thenAnswer((_) async => const Right(tTaskEntity));
           return newTaskBloc;
         },
-        act: (_) => newTaskBloc.add(const OnUpdateTask(tTaskEntity)),
-        seed: () => const NewTaskState(
-              status: NewTaskStatus.loading,
-            ),
+        act: (_) => newTaskBloc.add(const OnUpdateTask(task: tTaskEntity)),
+        seed: () => taskInitialState,
         wait: const Duration(milliseconds: 100),
         expect: () => [
               const NewTaskState(
-                status: NewTaskStatus.success,
+                updateStatus: NewTaskStatus.success,
+                title: TaskTitle.pure(),
+                date: '23-08-2022',
+                time: '12:23',
+              ),
+              const NewTaskState(
+                updateStatus: NewTaskStatus.loading,
+                title: TaskTitle.pure(),
+                date: '23-08-2022',
+                time: '12:23',
               )
             ]);
 
@@ -128,15 +128,25 @@ void main() {
         build: () {
           when(mockUpdateTaskUseCase(any))
               .thenAnswer((_) async => const Left(CacheFailure()));
-          return NewTaskBloc;
+          return newTaskBloc;
         },
-        act: (_) => newTaskBloc.add(const OnUpdateTask(tTaskEntity)),
+        act: (_) => newTaskBloc.add(const OnUpdateTask(task: tTaskEntity)),
+        seed: () => taskInitialState,
         wait: const Duration(milliseconds: 100),
         expect: () => [
-              taskInitialState,
               const NewTaskState(
-                status: NewTaskStatus.failure,
+                updateStatus: NewTaskStatus.failure,
                 failure: CacheFailure(),
+                title: TaskTitle.pure(),
+                date: '23-08-2022',
+                time: '12:23',
+              ),
+              const NewTaskState(
+                updateStatus: NewTaskStatus.loading,
+                failure: CacheFailure(),
+                title: TaskTitle.pure(),
+                date: '23-08-2022',
+                time: '12:23',
               )
             ]);
   });

@@ -67,23 +67,22 @@ class TaskWidget extends StatelessWidget {
                 padding: 5,
               ),
               CircularMenuItem(
-                  icon: Icons.check,
-                  color: Colors.greenAccent,
-                  iconSize: 15,
-                  onTap: () {
-                    context.read<NewTaskBloc>().add(
-                          OnSwitchMarkTask(
-                            task: task,
-                            context: context,
-                          ),
-                        );
-                    context.read<TaskBloc>().add(OnFindTasks());
-                  },
-                  padding: 5),
+                icon: Icons.check,
+                color: Colors.greenAccent,
+                iconSize: 15,
+                onTap: () {
+                  context.read<NewTaskBloc>().add(
+                        OnSwitchMarkTask(
+                          task: task,
+                        ),
+                      );
+                  context.read<TaskBloc>().add(OnFindTasks());
+                },
+                padding: 5,
+              ),
             ],
             radius: 40,
             alignment: Alignment.topRight,
-            // toggleButtonIconColor: strong,
             toggleButtonSize: 18,
             toggleButtonAnimatedIconData: AnimatedIcons.menu_close,
             backgroundWidget: Card(
@@ -93,19 +92,15 @@ class TaskWidget extends StatelessWidget {
                     ? IconButton(
                         onPressed: () {},
                         icon: Icon(Icons.check_circle_outline_rounded,
-                            // color: strong,
                             color: Theme.of(context).iconTheme.color),
                       )
                     : IconButton(
                         onPressed: () {},
                         icon: Icon(Icons.circle_outlined,
-                            color: Theme.of(context).iconTheme.color
-                            // color: strong,
-                            ),
+                            color: Theme.of(context).iconTheme.color),
                       ),
                 title: Text(
                   task.description,
-                  // style: const TextStyle(color: medium),
                 ),
                 subtitle: Text(
                   DateFormat('HH : mm').format(

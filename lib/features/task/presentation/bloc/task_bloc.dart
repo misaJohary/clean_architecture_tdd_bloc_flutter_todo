@@ -89,7 +89,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           tasks: List.of(state.tasks)..removeAt(id),
         ),
       );
-      add(OnUpdateTasks());
+      // add(OnUpdateTasks());
     });
   }
 

@@ -4,7 +4,7 @@ enum NewTaskStatus { loading, success, failure }
 
 class NewTaskState extends Equatable {
   const NewTaskState({
-    required this.status,
+    this.status,
     this.failure,
     required this.title,
     this.description,
@@ -14,8 +14,10 @@ class NewTaskState extends Equatable {
     this.titleError,
     this.controller,
     this.updateButtonController,
+    this.updateStatus,
   });
-  final NewTaskStatus status;
+  final NewTaskStatus? status;
+  final NewTaskStatus? updateStatus;
   final Failure? failure;
   final TaskTitle title;
   final String? description;
@@ -28,6 +30,7 @@ class NewTaskState extends Equatable {
 
   NewTaskState copyWith({
     NewTaskStatus? status,
+    NewTaskStatus? updateStatus,
     Failure? failure,
     TaskTitle? title,
     String? description,
@@ -41,6 +44,7 @@ class NewTaskState extends Equatable {
   }) =>
       NewTaskState(
         status: status ?? this.status,
+        updateStatus: updateStatus ?? this.updateStatus,
         failure: failure ?? this.failure,
         title: title ?? this.title,
         description: description ?? this.description,
@@ -55,6 +59,7 @@ class NewTaskState extends Equatable {
   @override
   List<Object?> get props => [
         status,
+        updateStatus,
         failure,
         title,
         description,
@@ -70,6 +75,7 @@ class NewTaskState extends Equatable {
 class NewTaskInitial extends NewTaskState {
   NewTaskInitial({
     super.status = NewTaskStatus.loading,
+    super.updateStatus = NewTaskStatus.loading,
     super.formStatus = FormzStatus.pure,
     super.title = const TaskTitle.pure(),
   }) : super(

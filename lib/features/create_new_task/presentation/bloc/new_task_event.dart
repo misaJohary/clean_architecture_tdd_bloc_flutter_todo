@@ -9,15 +9,15 @@ abstract class NewTaskEvent extends Equatable {
 
 class OnCreateTask extends NewTaskEvent {
   final TaskModel task;
-  final BuildContext context;
 
   const OnCreateTask({
-    required this.context,
     required this.task,
   });
 
   @override
-  List<Object> get props => [task, context];
+  List<Object?> get props => [
+        task,
+      ];
 }
 
 class OnTaskTitleChanged extends NewTaskEvent {
@@ -81,32 +81,26 @@ class OnInitializeTask extends NewTaskEvent {
 
 class OnUpdateTask extends NewTaskEvent {
   final TaskEntity task;
-  final BuildContext? context;
 
   const OnUpdateTask({
-    this.context,
     required this.task,
   });
 
   @override
   List<Object?> get props => [
         task,
-        context,
       ];
 }
 
 class OnSwitchMarkTask extends NewTaskEvent {
   final TaskEntity task;
-  final BuildContext context;
 
   const OnSwitchMarkTask({
-    required this.context,
     required this.task,
   });
 
   @override
   List<Object> get props => [
         task,
-        context,
       ];
 }

@@ -170,7 +170,6 @@ class _UpdateButton extends StatelessWidget {
                       date: '${state.date} ${state.time}',
                       isDone: task!.isDone,
                     ),
-                    context: context,
                   ),
                 );
             context.read<TaskBloc>()

@@ -6,7 +6,7 @@ enum CategoryType { all, today, unfinished }
 
 class TaskState extends Equatable {
   const TaskState({
-    required this.status,
+    this.status,
     required this.tasks,
     required this.todayTasks,
     required this.todayAndFutureTasks,
@@ -14,10 +14,10 @@ class TaskState extends Equatable {
     this.updateButtonController,
     required this.categorySelected,
     required this.categories,
-    required this.drawerController,
+    this.drawerController,
   });
 
-  final TaskStatus status;
+  final TaskStatus? status;
   final List<TaskEntity> tasks;
   final List<TaskEntity> todayTasks;
   final List<TaskEntity> todayAndFutureTasks;
@@ -25,7 +25,7 @@ class TaskState extends Equatable {
   final RoundedLoadingButtonController? updateButtonController;
   final CategoryType categorySelected;
   final List<Category> categories;
-  final ZoomDrawerController drawerController;
+  final ZoomDrawerController? drawerController;
 
   TaskState copyWith({
     TaskStatus? status,

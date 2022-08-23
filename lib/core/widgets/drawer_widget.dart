@@ -16,7 +16,7 @@ class DrawerWidget extends StatelessWidget {
         builder: (context, state) {
           return IconButton(
             onPressed: () {
-              state.drawerController.open!();
+              state.drawerController?.open!();
             },
             icon: SvgPicture.asset(
               'assets/images/icon_drawer.svg',

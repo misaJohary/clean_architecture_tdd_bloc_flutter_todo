@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/helpers/unfocus_keyboard.dart';
+import '../../../../core/pop_up/toast_message.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/m_rounded_loading_button.dart';
 import '../../../task/presentation/bloc/task_bloc.dart';
@@ -15,59 +16,79 @@ class NewTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        extendBody: true,
-        appBar: CustomAppBar(
-          onPressed: () {
-            Navigator.of(context).pop();
-            context.read<TaskBloc>()
-              ..add(OnFindTasks())
-              ..add(OnFindTodayAndFutureTasks());
-          },
-          title: AppLocalizations.of(context)!.addNewTask,
-          actions: [
-            BlocBuilder<NewTaskBloc, NewTaskState>(
-              builder: (context, state) {
-                return MRoundedLoadingButton(
-                  width: 40,
-                  height: 40,
-                  elevation: 0,
-                  color: Colors.transparent,
-                  controller: state.controller!,
-                  onPressed: () {
-                    unfocusKeyboard();
-                    context.read<NewTaskBloc>().add(OnAddNewTask(context));
-                  },
-                  child: const Icon(
-                    Icons.add_circle_outline_rounded,
+    return BlocListener<NewTaskBloc, NewTaskState>(
+      listener: (context, state) {
+        switch (state.status) {
+          case NewTaskStatus.success:
+            successMessage(
+              context,
+              AppLocalizations.of(context)!.successCreatingNewTask,
+            );
+            break;
+
+          case NewTaskStatus.failure:
+            failureMessage(
+              context,
+              AppLocalizations.of(context)!.errorCreatingNewTask,
+            );
+            break;
+          default:
+        }
+      },
+      child: SafeArea(
+        child: Scaffold(
+          extendBody: true,
+          appBar: CustomAppBar(
+            onPressed: () {
+              Navigator.of(context).pop();
+              context.read<TaskBloc>()
+                ..add(OnFindTasks())
+                ..add(OnFindTodayAndFutureTasks());
+            },
+            title: AppLocalizations.of(context)!.addNewTask,
+            actions: [
+              BlocBuilder<NewTaskBloc, NewTaskState>(
+                builder: (context, state) {
+                  return MRoundedLoadingButton(
+                    width: 40,
+                    height: 40,
+                    elevation: 0,
+                    color: Colors.transparent,
+                    controller: state.controller!,
+                    onPressed: () {
+                      unfocusKeyboard();
+                      context.read<NewTaskBloc>().add(OnAddNewTask(context));
+                    },
+                    child: const Icon(
+                      Icons.add_circle_outline_rounded,
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
+          body: Form(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 10,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const [
+                      _InputDate(),
+                      _InputTime(),
+                    ],
                   ),
-                );
-              },
-            )
-          ],
-        ),
-        body: Form(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20.0,
-              vertical: 10,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: const [
-                    _InputDate(),
-                    _InputTime(),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const _InputName(),
-                const _InputDescription(),
-              ],
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const _InputName(),
+                  const _InputDescription(),
+                ],
+              ),
             ),
           ),
         ),
