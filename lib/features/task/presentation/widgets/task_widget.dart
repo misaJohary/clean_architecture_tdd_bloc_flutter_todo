@@ -33,6 +33,8 @@ class TaskWidget extends StatelessWidget {
           child: CircularMenu(
             startingAngleInRadian: 2.61799,
             endingAngleInRadian: 4.71239,
+            toggleButtonColor: Colors.white,
+            toggleButtonIconColor: Theme.of(context).colorScheme.onSecondary,
             items: [
               CircularMenuItem(
                   icon: Icons.edit,
@@ -65,46 +67,40 @@ class TaskWidget extends StatelessWidget {
                 padding: 5,
               ),
               CircularMenuItem(
-                  icon: Icons.check,
-                  color: Colors.greenAccent,
-                  iconSize: 15,
-                  onTap: () {
-                    context.read<NewTaskBloc>().add(
-                          OnSwitchMarkTask(
-                            task: task,
-                            context: context,
-                          ),
-                        );
-                    context.read<TaskBloc>().add(OnFindTasks());
-                  },
-                  padding: 5),
+                icon: Icons.check,
+                color: Colors.greenAccent,
+                iconSize: 15,
+                onTap: () {
+                  context.read<NewTaskBloc>().add(
+                        OnSwitchMarkTask(
+                          task: task,
+                        ),
+                      );
+                  context.read<TaskBloc>().add(OnFindTasks());
+                },
+                padding: 5,
+              ),
             ],
             radius: 40,
             alignment: Alignment.topRight,
-            toggleButtonIconColor: strong,
             toggleButtonSize: 18,
             toggleButtonAnimatedIconData: AnimatedIcons.menu_close,
             backgroundWidget: Card(
-              surfaceTintColor: Colors.white,
+              surfaceTintColor: light,
               child: ListTile(
                 leading: task.isDone
                     ? IconButton(
                         onPressed: () {},
-                        icon: const Icon(
-                          Icons.check_circle_outline_rounded,
-                          color: strong,
-                        ),
+                        icon: Icon(Icons.check_circle_outline_rounded,
+                            color: Theme.of(context).iconTheme.color),
                       )
                     : IconButton(
                         onPressed: () {},
-                        icon: const Icon(
-                          Icons.circle_outlined,
-                          color: strong,
-                        ),
+                        icon: Icon(Icons.circle_outlined,
+                            color: Theme.of(context).iconTheme.color),
                       ),
                 title: Text(
                   task.description,
-                  style: const TextStyle(color: medium),
                 ),
                 subtitle: Text(
                   DateFormat('HH : mm').format(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-import '../../../../../core/theme/theme.dart';
 import '../../../domain/entity/category.dart';
 
 class BaseCategoryWidget extends StatelessWidget {
@@ -20,8 +19,7 @@ class BaseCategoryWidget extends StatelessWidget {
     final isChecked = category.isChecked;
     // final isDark = MediaQuery.of(context).platformBrightness == Brightness.dark;
     return Card(
-      color: isChecked ? mColor : null,
-      surfaceTintColor: isChecked ? mColor : Colors.white,
+      color: isChecked ? Theme.of(context).focusColor : null,
       child: Stack(children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -32,7 +30,6 @@ class BaseCategoryWidget extends StatelessWidget {
                       isChecked
                           ? Icons.radio_button_checked_rounded
                           : Icons.circle_outlined,
-                      color: Colors.white,
                     )
                   : const Icon(
                       Icons.circle_outlined,
@@ -42,12 +39,6 @@ class BaseCategoryWidget extends StatelessWidget {
               ),
               Text(
                 '${category.name} (${category.numberTasks})',
-                style: isChecked
-                    ? Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(color: Colors.white)
-                    : Theme.of(context).textTheme.bodyText2,
               ),
             ],
           ),
@@ -59,13 +50,14 @@ class BaseCategoryWidget extends StatelessWidget {
             child: PieChart(
               chartRadius: 50,
               ringStrokeWidth: 5,
-              centerText:
-                  '${(category.numberDone / category.numberTasks * 100).toStringAsFixed(1)}%',
+              centerText: category.numberTasks != 0
+                  ? '${(category.numberDone / category.numberTasks * 100).toStringAsFixed(1)}%'
+                  : '0.0%',
               dataMap: {'done': category.numberDone.toDouble()},
-              centerTextStyle: TextStyle(
-                  color: isChecked ? Colors.grey : strong, fontSize: 12),
+              centerTextStyle: Theme.of(context).textTheme.caption,
               chartType: ChartType.ring,
-              baseChartColor: isChecked ? Colors.white : light,
+              baseChartColor:
+                  isChecked ? Colors.white : Theme.of(context).focusColor,
               chartValuesOptions: const ChartValuesOptions(
                 showChartValues: false,
                 showChartValueBackground: false,

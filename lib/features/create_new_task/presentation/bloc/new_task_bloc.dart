@@ -53,19 +53,28 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     state.controller?.stop();
 
     res.fold((failure) {
-      failureMessage(event.context,
-          AppLocalizations.of(event.context)!.errorCreatingNewTask);
-      return emit(
-          state.copyWith(status: NewTaskStatus.failure, failure: failure));
+      emit(
+        state.copyWith(
+          status: NewTaskStatus.failure,
+          failure: failure,
+        ),
+      );
+      emit(
+        state.copyWith(
+          status: NewTaskStatus.loading,
+        ),
+      );
     }, (task) {
-      successMessage(event.context,
-          AppLocalizations.of(event.context)!.successCreatingNewTask);
-
-      return emit(
+      emit(
         state.copyWith(
           status: NewTaskStatus.success,
           title: const TaskTitle.pure(),
           description: null,
+        ),
+      );
+      emit(
+        state.copyWith(
+          status: NewTaskStatus.loading,
         ),
       );
     });
@@ -121,9 +130,9 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
         name: state.title.value,
         description: state.description ?? '',
         date: '${state.date} ${state.time}',
-        isDone: false,
+        isDone: true,
       );
-      add(OnCreateTask(context: event.context, task: newTask));
+      add(OnCreateTask(task: newTask));
     }
   }
 
@@ -149,7 +158,9 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     Emitter<NewTaskState> emit,
   ) async {
     final TimeOfDay? picked = await showTimePicker(
-        context: event.context, initialTime: TimeOfDay.now());
+      context: event.context,
+      initialTime: TimeOfDay.now(),
+    );
 
     final String time = generateTime(picked);
 
@@ -183,20 +194,32 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
     Emitter<NewTaskState> emit,
   ) async {
     emit(state.copyWith(
-      status: NewTaskStatus.loading,
+      updateStatus: NewTaskStatus.loading,
     ));
     final res = await updateTask(UpdateTaskParam(event.task));
     state.updateButtonController?.stop();
 
     res.fold((failure) {
-      failureMessage(event.context!, 'Task update failed');
-      return emit(
-          state.copyWith(status: NewTaskStatus.failure, failure: failure));
-    }, (task) {
-      successMessage(event.context!, 'Task updated successfully');
-      return emit(
+      emit(
         state.copyWith(
-          status: NewTaskStatus.success,
+          updateStatus: NewTaskStatus.failure,
+          failure: failure,
+        ),
+      );
+      emit(
+        state.copyWith(
+          updateStatus: NewTaskStatus.loading,
+        ),
+      );
+    }, (task) {
+      emit(
+        state.copyWith(
+          updateStatus: NewTaskStatus.success,
+        ),
+      );
+      emit(
+        state.copyWith(
+          updateStatus: NewTaskStatus.loading,
         ),
       );
     });
@@ -205,20 +228,12 @@ class NewTaskBloc extends Bloc<NewTaskEvent, NewTaskState> {
   void _onSwitchMarkTask(
     OnSwitchMarkTask event,
     Emitter<NewTaskState> emit,
-  ) async {
+  ) {
     add(
       OnUpdateTask(
-        context: event.context,
         task: TaskEntity.switchMarkDone(event.task),
       ),
     );
-    // final res = await updateTask(UpdateTaskParam(event.task));
-
-    // res.fold((failure) {
-    //   failureMessage(event.context, 'Failed');
-    // }, (task) {
-    //   successMessage(event.context, 'Success');
-    // });
   }
 }
 

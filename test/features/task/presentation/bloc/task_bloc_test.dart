@@ -1,7 +1,10 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+import 'package:my_todo_clean/features/task/domain/entity/category.dart';
 import 'package:my_todo_clean/features/task/domain/entity/task_entity.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/delete_task.dart';
 import 'package:my_todo_clean/features/task/domain/usecases/find_tasks.dart';
@@ -18,6 +21,30 @@ void main() {
   late MockFindTodaysTask mockFindTodaysTask;
   late MockDeleteTask mockDeleteTask;
   late TaskBloc taskBloc;
+
+  const categories = [
+    Category(
+      name: 'All',
+      type: CategoryType.all,
+      isChecked: true,
+      numberTasks: 0,
+      numberDone: 0,
+    ),
+    Category(
+      name: 'Today',
+      type: CategoryType.today,
+      isChecked: false,
+      numberTasks: 0,
+      numberDone: 0,
+    ),
+    Category(
+      name: 'Unfinished',
+      type: CategoryType.unfinished,
+      isChecked: false,
+      numberTasks: 0,
+      numberDone: 0,
+    ),
+  ];
 
   const tTasks = [
     TaskEntity(
@@ -305,44 +332,55 @@ void main() {
   //           ]);
   // });
 
-  // group('Delete task', () {
-  //   blocTest('should delete task in the list of current state task',
-  //       build: () {
-  //         when(mockDeleteTask(any))
-  //             .thenAnswer((_) async => const Right(tTaskEntity));
-  //         return taskBloc;
-  //       },
-  //       act: (_) => taskBloc.add(const OnDeleteTask(tTaskEntity)),
-  //       seed: () => const TaskState(
-  //           status: TaskStatus.loading, tasks: tTasks, todayTasks: []),
-  //       wait: const Duration(milliseconds: 100),
-  //       expect: () => [
-  //             const TaskState(
-  //                 status: TaskStatus.success,
-  //                 tasks: tTasksDeleted,
-  //                 todayTasks: [])
-  //           ]);
+  group('Delete task', () {
+    blocTest('should delete task in the list of current state task',
+        build: () {
+          when(mockDeleteTask(any))
+              .thenAnswer((_) async => const Right(tTaskEntity));
 
-  //   blocTest(
-  //     'should return failure',
-  //     build: () {
-  //       when(mockDeleteTask(any))
-  //           .thenAnswer((_) async => const Left(CacheFailure()));
-  //       return taskBloc;
-  //     },
-  //     act: (_) => taskBloc.add(const OnDeleteTask(tTaskEntity)),
-  //     wait: const Duration(milliseconds: 100),
-  //     expect: () => [
-  //       taskInitialState,
-  //       const TaskState(
-  //         status: TaskStatus.failure,
-  //         tasks: [],
-  //         todayTasks: [],
-  //         failure: CacheFailure(),
-  //       )
-  //     ],
-  //   );
-  // });
+          return taskBloc;
+        },
+        act: (_) => taskBloc.add(const OnDeleteTask(tTaskEntity)),
+        seed: () => const TaskState(
+              status: TaskStatus.loading,
+              tasks: tTasks,
+              categories: categories,
+              todayTasks: [],
+              todayAndFutureTasks: [],
+              categorySelected: CategoryType.all,
+            ),
+        wait: const Duration(milliseconds: 100),
+        expect: () => [
+              const TaskState(
+                status: TaskStatus.success,
+                tasks: tTasksDeleted,
+                categories: categories,
+                todayTasks: [],
+                todayAndFutureTasks: [],
+                categorySelected: CategoryType.all,
+              )
+            ]);
+
+    // blocTest(
+    //   'should return failure',
+    //   build: () {
+    //     when(mockDeleteTask(any))
+    //         .thenAnswer((_) async => const Left(CacheFailure()));
+    //     return taskBloc;
+    //   },
+    //   act: (_) => taskBloc.add(const OnDeleteTask(tTaskEntity)),
+    //   wait: const Duration(milliseconds: 100),
+    //   expect: () => [
+    //     taskInitialState,
+    //     const TaskState(
+    //       status: TaskStatus.failure,
+    //       tasks: [],
+    //       todayTasks: [],
+    //       failure: CacheFailure(),
+    //     )
+    //   ],
+    // );
+  });
 
   group('Today and future task', () {
     final today = DateTime.now();
@@ -437,18 +475,21 @@ void main() {
         return taskBloc;
       },
       seed: () => TaskState(
-          status: TaskStatus.loading,
-          tasks: tAllTasks,
-          todayTasks: const [],
-          todayAndFutureTasks: const []),
+        categories: categories,
+        tasks: tAllTasks,
+        todayTasks: const [],
+        todayAndFutureTasks: const [],
+        categorySelected: CategoryType.all,
+      ),
       act: (_) => taskBloc.add(OnFindTodayAndFutureTasks()),
       expect: () => [
         equals(
           TaskState(
-            status: TaskStatus.success,
+            categories: categories,
             tasks: tAllTasks,
             todayTasks: const [],
             todayAndFutureTasks: tTodayAndFutureTasks,
+            categorySelected: CategoryType.all,
           ),
         )
       ],

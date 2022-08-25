@@ -132,22 +132,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     OnUpdateCategoryLength event,
     Emitter<TaskState> emit,
   ) {
-    // for (int i = 0; i < state.categories.length; i++){
-    //   switch (state.categories[i].type) {
-    //     case CategoryType.all:
-    //       state.todayAndFutureTasks.map((task) {
-    //           if (task.isDone == true) {
-    //             finishTasks++;
-    //           }
-    //         });
-    //         return category.copyWith(
-    //           numberTasks: state.todayAndFutureTasks.length,
-    //           numberDone: finishTasks,
-    //         );
-    //       // break;
-    //     default:
-    //   }
-    // }
     final categories = state.categories.map((category) {
       int finishTasks = 0;
       switch (category.type) {

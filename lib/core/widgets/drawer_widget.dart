@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../features/task/presentation/bloc/task_bloc.dart';
-import '../theme/theme.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({
@@ -17,11 +16,11 @@ class DrawerWidget extends StatelessWidget {
         builder: (context, state) {
           return IconButton(
             onPressed: () {
-              state.drawerController.open!();
+              state.drawerController?.open!();
             },
             icon: SvgPicture.asset(
               'assets/images/icon_drawer.svg',
-              color: strong,
+              color: Theme.of(context).iconTheme.color,
             ),
           );
         },

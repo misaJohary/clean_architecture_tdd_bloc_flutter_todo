@@ -11,6 +11,7 @@ class AddFAB extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
+        // context.read<NewTaskBloc>().add(OnInitializeStatus());
         Navigator.of(context).pushNamed(AppRoute.newTaskPage);
       },
       child: const Icon(Icons.add),
