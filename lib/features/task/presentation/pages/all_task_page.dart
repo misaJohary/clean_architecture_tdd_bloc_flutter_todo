@@ -19,7 +19,6 @@ class AllTaskPage extends StatelessWidget {
       listener: (context, state) {
         switch (state.updateStatus) {
           case NewTaskStatus.success:
-            print('heeere');
             successMessage(context, 'Task update successfully'
                 // AppLocalizations.of(context)!.successCreatingNewTask,
                 );

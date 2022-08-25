@@ -69,33 +69,4 @@ void main() {
       },
     );
   });
-
-  // group('String to datetime date only', () {
-  //   test(
-  //     'with date time without hour',
-  //     () {
-  //       final tDate = DateTime(
-  //         2022,
-  //         10,
-  //         24,
-  //       );
-  //       final res = DateTimeFactoryImp().stringToDateTimeDateOnly('2022-10-24');
-  //       expect(res, tDate);
-  //     },
-  //   );
-
-  //   test(
-  //     'with string with hour',
-  //     () {
-  //       final tDate = DateTime(
-  //         2022,
-  //         10,
-  //         24,
-  //       );
-  //       final res =
-  //           DateTimeFactoryImp().stringToDateTimeDateOnly('2022-10-24 12:34');
-  //       expect(res, tDate);
-  //     },
-  //   );
-  // });
 }
